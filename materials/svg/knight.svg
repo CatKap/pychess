@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 135.46667 135.46667"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="knight.svg"
+   inkscape:export-filename="D:\Progects\figures\black_knight.png"
+   inkscape:export-xdpi="14.0625"
+   inkscape:export-ydpi="14.0625"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:snap-global="true"
+     inkscape:zoom="1.0097656"
+     inkscape:cx="209.45455"
+     inkscape:cy="277.29208"
+     inkscape:window-width="1920"
+     inkscape:window-height="1013"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Слой 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.9687501;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill;stroke-linejoin:bevel"
+       id="rect31"
+       width="74.939011"
+       height="30.918892"
+       x="29.084717"
+       y="98.259193" />
+    <path
+       style="fill:#ffffff;stroke:#000000;stroke-width:3.9687501;stroke-linecap:butt;stroke-linejoin:bevel;stroke-opacity:1;fill-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;paint-order:markers stroke fill"
+       d="M 37.20748,95.114898 H 94.590847 V 32.753065 H 42.972018 v 25.6784 h 2.358221 2.358221 2.35822 2.358221 2.358221 2.358221 2.35822 2.358221 v -12.8392 H 82.013671 C 93.977796,99.620744 35.897359,48.144668 35.897359,95.114898 Z"
+       id="path1544"
+       sodipodi:nodetypes="ccccccccccccccccc" />
+    <path
+       style="fill:#ffffff;stroke:#000000;stroke-width:3.9687501;stroke-linecap:butt;stroke-linejoin:bevel;stroke-opacity:1;fill-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;paint-order:markers stroke fill"
+       d="m 44.806191,29.60877 h 51.356804 v 29.084721 h 7.860735 V 50.308704 H 99.569312 V 37.207479 h 3.668348 V 27.774596 H 98.259191 V 23.320181 H 92.49465 v 2.88227 h -8.908833 v -4.192392 h -6.288588 v 5.502515 h -7.860734 v -7.598712 h -9.432883 v 5.502515 h -5.240491 v -5.764539 h -4.192392 v 6.288588 h -8.908833 v 3.668344 z"
+       id="path1700" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:3.9687501;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill;stroke-linejoin:bevel"
+       id="rect1804"
+       width="5.24049"
+       height="4.4544168"
+       x="50.570732"
+       y="40.875828" />
+  </g>
+</svg>

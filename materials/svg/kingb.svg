@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 135.46667 135.46667"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="kingb.svg"
+   inkscape:export-filename="/home/kapitan/Progects/Chess/materials/png/black_king.png"
+   inkscape:export-xdpi="14.0625"
+   inkscape:export-ydpi="14.0625"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:snap-global="false"
+     inkscape:zoom="1.0097656"
+     inkscape:cx="435.74469"
+     inkscape:cy="200.04643"
+     inkscape:window-width="1920"
+     inkscape:window-height="1013"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Слой 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:3.96875;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="rect31"
+       width="74.939011"
+       height="22.248629"
+       x="29.87079"
+       y="106.66743" />
+    <path
+       id="path1164"
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:3.87169;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       d="m 53.058498,35.128913 c 1.499918,3.327993 3.041712,6.631016 0,12.667312 l 2.47003,0.09642 v 17.29966 h -4.862944 v 7.017381 h 6.402428 V 94.785739 H 44.096353 v 7.776581 l 14.601972,-0.004 v 0.0396 l 30.172193,0.007 V 94.829263 H 75.89886 V 72.253208 h 6.402999 V 65.235827 H 77.438342 V 47.93562 l 2.470033,-0.09587 c -3.041711,-6.036301 -1.499922,-9.339319 0,-12.667315 l -8.666818,0.03912 z" />
+    <path
+       id="path3158"
+       style="fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:3.96875;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       d="m 57.733775,9.8291515 c -4.2852,0.0083 -7.531822,3.9768135 -1.879574,20.8701765 H 66.10508 76.354824 C 86.99435,-1.0999447 66.10508,12.897931 66.10508,12.897931 c 0,0 -4.590242,-3.0760725 -8.371305,-3.0687795 z" />
+    <path
+       style="stroke:none;stroke-width:0.418042;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill;fill:#ffffff;fill-opacity:1"
+       d="m 65.058693,10.690343 v 2.067573 6.74946 l -13.078792,0.155028 0.66766,2.338877 12.411132,-0.0052 v 9.656774 h 2.27738 v -9.657768 l 11.47268,-0.0047 0.65216,-2.653583 -12.12484,0.143658 V 12.744438 10.6903 Z"
+       id="path7963" />
+    <g
+       id="g10246"
+       transform="translate(-28.090083,-0.19928912)"
+       style="fill:#000000;fill-opacity:1">
+      <path
+         style="stroke:#000000;stroke-width:1.15887;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill;fill:#ffffff;fill-opacity:1"
+         d="m 92.999079,2.4611174 v 1.720308 h -1.90531 v 2.282031 h 1.90531 v 3.8416256 h 2.27738 V 6.4634564 h 1.66501 v -2.282031 h -1.66501 v -1.720308 z"
+         id="path10243" />
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:2.08733;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+         id="rect10139"
+         width="3.5687611"
+         height="1.0001609"
+         x="92.372009"
+         y="9.9131622" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 135.46667 135.46667"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="bishop.svg"
+   inkscape:export-filename="/home/kapitan/Progects/Chess/materials/png/white_bishop.png"
+   inkscape:export-xdpi="14.0625"
+   inkscape:export-ydpi="14.0625"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:snap-global="false"
+     inkscape:zoom="0.7140121"
+     inkscape:cx="173.66652"
+     inkscape:cy="253.4971"
+     inkscape:window-width="1920"
+     inkscape:window-height="1013"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Слой 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000002;stroke-width:3.9687501;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stroke-linejoin:bevel;paint-order:markers stroke fill;stroke-linecap:butt"
+       id="rect31"
+       width="74.960999"
+       height="30.568222"
+       x="29.073721"
+       y="98.620857" />
+    <path
+       id="rect991"
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000002;stroke-width:3.9687501;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stroke-linejoin:bevel;paint-order:markers stroke fill;stroke-linecap:butt"
+       d="m 59.181714,8.284424 v 2.858508 l -5.466894,-0.0043 -0.0036,15.28664 8.563802,0.0065 v 7.466826 h -7.330607 v 5.795399 l -4.09759,-0.0011 c -3.324769,-8.33e-4 -6.0029,1.948223 -6.004613,4.36993 -0.0017,2.421704 2.673657,4.371799 5.998425,4.372629 l 4.103778,0.0011 V 95.458658 H 76.184554 V 48.441926 l 3.259823,0.0011 c 3.324768,8.33e-4 6.0029,-1.948224 6.004612,-4.36993 0.0017,-2.421704 -2.673656,-4.371796 -5.998424,-4.37263 l -3.266011,-0.0011 v -5.800803 h -7.069223 v -7.461422 l 8.037941,0.0059 0.0036,-15.286642 -5.427711,-0.0043 V 8.2843869 Z" />
+  </g>
+</svg>

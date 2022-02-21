@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 135.46667 135.46667"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="tower.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:snap-global="true"
+     inkscape:zoom="1.0097656"
+     inkscape:cx="304.03096"
+     inkscape:cy="283.23405"
+     inkscape:window-width="1920"
+     inkscape:window-height="1013"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Слой 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect927"
+       style="fill:#ffffff;stroke:#000000;stroke-width:3.96875;stroke-miterlimit:4;stroke-dasharray:none;paint-order:markers stroke fill;stroke-linejoin:miter"
+       d="m 36.883304,20.011295 v 8.647017 7.867737 l 9.040275,0.254765 0.130741,39.042063 H 36.883304 V 92.854395 H 96.362877 V 75.822877 h -9.170499 l 0.130742,-39.042063 9.039757,-0.254765 v -7.867737 -8.647017 h -8.909016 v 8.647017 H 84.834383 V 22.10419 h -8.909019 v 6.554122 H 71.340116 V 22.10419 h -8.909018 v 6.554122 H 57.845847 V 22.10419 h -8.909015 v 6.554122 h -3.144513 v -8.647017 z" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:3.9687501;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill;stroke-linejoin:miter"
+       id="rect31"
+       width="74.939011"
+       height="30.918892"
+       x="29.87079"
+       y="97.997169" />
+  </g>
+</svg>
