@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#define _DEBUG
+//#define _DEBUG
 #ifdef _DEBUG
     #define dprint(str_val)  printf("%s\n", str_val) 
     #define dprintd(name, int_val) printf("%s: %d\n", name, int_val)

@@ -281,6 +281,6 @@ class pyDesk(desk):
 
 if __name__ == "__main__":
     print("It is a module.")
-    test_st = status(-128)
-    print(test_st.get_int_status())
+    d = desk()
+    print(d.desk_positions)
     
