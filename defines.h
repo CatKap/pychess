@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-//#define _DEBUG
+#define _DEBUG
 #ifdef _DEBUG
     #define dprint(str_val)  printf("%s\n", str_val) 
     #define dprintd(name, int_val) printf("%s: %d\n", name, int_val)
@@ -33,7 +33,39 @@
 #define same_colunm(a, b) !not_same_colunm(a, b)
 #define same_row(a, b) !not_same_row(a, b)
 
+// Structures of list, Ai functions
+
+/* This struct are part of space of possible moves. 
+Every stucture contain a position, where figure now stand;
+possible position to bite (one at one node);
+and probabilyty - for AI.
+*/
+
+typedef struct 
+{
+    char position; 
+    char posible_bite_position;
+    float probabilyty;
+} bite_prob;
+
+struct node
+{
+    char number;
+    bite_prob data;
+    struct node *next;
+};
+
+typedef struct 
+{
+    char lenth;
+    struct node *first;
+} list;
+
+struct node *list_pop(list *lst, char index);
+list *brute_check(char positions[64], char status, char colour);
+struct node *list_pop(list *lst, char index);
+struct node *fast_pop(list *list);
+
 // Functions, using in pychess module
 char c_move(signed char positions[64], unsigned char pos, unsigned char new_position, char *status);
-
 int is_pos_biten(signed char positions[64], char pos, char is_white_bite, char* array);

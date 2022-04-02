@@ -1,33 +1,8 @@
-#define _DEBUG
 #include "defines.h"
 // Some functions for AI require
 
-/* This struct are part of space of possible moves. 
-Every stucture contain a position, where figure now stand;
-possible position to bite (one at one node);
-and probabilyty - for AI.
-*/
-typedef struct 
-{
-    char position;
-    char posible_bite_position;
-    float probabilyty;
-} bite_prob;
 
-struct node 
-{
-    char number;
-    bite_prob data;
-    struct node *next;
-};
-
-typedef struct 
-{
-    char lenth;
-    struct node *first;
-} list;
-
-list* list_create()
+list *list_create()
 {
    list *new = malloc(sizeof(list));
    new->lenth = 0;
@@ -37,6 +12,12 @@ list* list_create()
 
 void list_add(list *lst, bite_prob dt)
 {
+
+    #ifdef _DEBUG
+        dprint("+++++++++++++++++++++++ADD DEBUG 16");
+        dprintd("pos", dt.position);
+        dprintd("posb", dt.posible_bite_position);
+    #endif
     struct node *new = malloc(sizeof(struct node));
     new->number = lst->lenth;
     new->data.position = dt.position;
@@ -49,7 +30,7 @@ void list_add(list *lst, bite_prob dt)
     dprintd("LENTH", lst->lenth);
 }
 
-struct node* list_get(list *lst, char index)
+struct node *list_get(list *lst, char index)
 {
     if(lst->lenth == 0 || lst->lenth < index)
         return NULL;
@@ -63,7 +44,7 @@ struct node* list_get(list *lst, char index)
     }
 }
 
-struct node* list_pop(list *lst, char index)
+struct node *list_pop(list *lst, char index)
 {
     if(abs(index) >= lst->lenth) 
         return NULL;
@@ -107,7 +88,29 @@ struct node* list_pop(list *lst, char index)
     return ret;
 }
 
-list* init_desk(char positions[64], char status, char colour)
+
+struct node *fast_pop(list *list)
+{
+    if(list->lenth > 0)
+    {
+        struct node *ret = list->first;
+        list->first = ret->next;
+
+        struct node *index_nd = list->first;
+        do
+        {
+            if(index_nd->number > ret->number && index_nd != NULL) 
+                index_nd->number--;
+            index_nd=index_nd->next;
+        }
+        while(index_nd->next != NULL);
+        list->lenth--;
+        return ret; 
+    }
+    return NULL; // ERRNO SEE
+}
+
+list* brute_check(char positions[64], char status, char colour)
 {
     list *ret_list = list_create();
     bite_prob next;
@@ -131,8 +134,8 @@ list* init_desk(char positions[64], char status, char colour)
     float prob = 1 / (float)(ret_list->lenth);
     while(nd->next != NULL)
     {
-        nd->data.probabilyty = prob;
         nd = nd->next;
+        nd->data.probabilyty = prob;
     }
     return ret_list;
 }
@@ -149,7 +152,7 @@ int main(void)
     0, 0, 0, 0, 0, 0, 0, 0, 
    -1,-1,-1,-1,-1,-1,-1,-1, 
    -4,-2,-3,-5,-6,-3,-2,-4};
-    list *space = init_desk(positions, 0, True);
+    list *space = brute_check(positions, 0, True); // First desk init 
     struct node *nd = space->first;
     while(nd->next != NULL)
     {

@@ -64,5 +64,4 @@ int figure_is_blocked_test(char figure)
 int main(void)
 {
     figure_is_blocked_test(3);
-
 }

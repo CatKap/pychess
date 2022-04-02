@@ -1,3 +1,4 @@
+#! /usr/bin/python3.9
 from types import new_class
 from importlib import __import__
 
@@ -279,8 +280,17 @@ class pyDesk(desk):
             fig_rect.y = h - y - 75  
             self.pygame.draw.rect(self.display, (255, 0, 0), fig_rect, 4)
 
+
+class test:
+    
+    def prob_space_test(self):
+        dsk = desk()
+        print("Without error:")
+        ret = pychess.space_of_probs(dsk.desk_positions, 1)
+        print(ret)
+
 if __name__ == "__main__":
     print("It is a module.")
-    d = desk()
-    print(d.desk_positions)
+    t = test()
+    t.prob_space_test()
     
