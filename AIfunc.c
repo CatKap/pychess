@@ -1,7 +1,6 @@
 #include "defines.h"
 // Some functions for AI require
 
-
 list *list_create()
 {
    list *new = malloc(sizeof(list));
@@ -88,7 +87,6 @@ struct node *list_pop(list *lst, char index)
     return ret;
 }
 
-
 struct node *fast_pop(list *list)
 {
     if(list->lenth > 0)
@@ -139,6 +137,31 @@ list* brute_check(char positions[64], char status, char colour)
     }
     return ret_list;
 }
+
+
+float fig_cost(char figure)
+{
+    switch(figure)
+    {
+        case 1: case -1:
+            return 1;
+
+        case 2: case -2: case 3: case -3:
+            return 3;
+        
+        case 4: case -4:
+            return 5;
+            
+        case 5: case -5:
+            return 9;
+
+        case 6: case -6:
+            return -1;
+        default:
+            return 0;
+    }
+}
+
 
 
 int main(void)
