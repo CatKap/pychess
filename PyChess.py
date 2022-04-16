@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-=======
-#! /usr/bin/python3.9
-from types import new_class
->>>>>>> dev
+#test
 from importlib import __import__
 
 import pygame
@@ -339,12 +335,7 @@ class test:
 
 if __name__ == "__main__":
     print("It is a module.")
-<<<<<<< HEAD
     d = desk()
     print(d.desk_positions)
     pychess.set_last_move(3, 3, 1)
-=======
-    t = test()
-    t.prob_space_test()
->>>>>>> dev
     
