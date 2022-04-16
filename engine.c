@@ -1,11 +1,13 @@
 #include "defines.h"
-
 char king_points[8] = {-9, -8, -7, -1, 1, 7, 8, 9};
 char knight_points[8] = {-17, -15, -10, -6, 6, 10, 15, 17};
 char queen_steps[8] = {-9, -7, 7, 9, -8, -1, 1, 8};
 char* bishop_steps = queen_steps;
 char* tower_steps = queen_steps + 4;
- 
+char __GLOBAL_OLD_position = -1;
+char __GLOBAL_OLD_new_position = -1;
+char __GLOBAL_FLAG_is_last_move_data_correct = False;
+
 char is_pos_exsist(unsigned char pos)
 {
     if (pos >= 64)
@@ -702,6 +704,26 @@ char apply_move(signed char positions[64], unsigned char pos, unsigned char new_
     return flag;
 }
 
+char take_on_pass_check(char positions[64])
+    {
+        dprint("----------------ENTER IN take_on_pass_check---------------");
+        if(!__GLOBAL_FLAG_is_last_move_data_correct)
+        {
+            dprint("EXIT FROM take_on_pass");
+            return False;
+        }
+        dprint("CHECK PASS");
+        dprint("-----IF DATA-----");
+        dprintd("OLD_pos_fig", abs(positions[__GLOBAL_OLD_new_position]));
+        dprintd("TR_VAL", trans_val(__GLOBAL_OLD_new_position, __GLOBAL_OLD_position));
+        if(abs(positions[__GLOBAL_OLD_new_position]) == 1 && abs(trans_val(__GLOBAL_OLD_new_position, __GLOBAL_OLD_position)) == 2) 
+        {
+            return True;
+        }
+        return False;
+    }
+
+
 // That function return True (1) if move applyed and modificate status, if that's necessary
 char c_move(signed char positions[64], unsigned char pos, unsigned char new_position, char *status)
 {
@@ -731,22 +753,45 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
                 {
                     return apply_move(positions, pos, new_position, status);
                 }
+
+                if (new_position == pos + 7 || new_position == pos + 9) 
+                {
+                    dprint("-----------------TAKE ON PASS CHECK ENTER-----------------");
+                    dprintd("ONP", __GLOBAL_OLD_new_position);
+                    dprintd("OP", __GLOBAL_OLD_position);
+                    dprintd("FLAG", __GLOBAL_FLAG_is_last_move_data_correct);
+                    dprint("------IF DATA-----");
+                    dprintd("pos[n_pos - 8]", positions[new_position - 8]);
+                    dprintd("take_on_pass_check", take_on_pass_check(positions));
+                    if (positions[new_position - 8] == -1 && take_on_pass_check(positions))
+                    {
+                        dprint("ENTER");
+                        positions[new_position - 8] = 0;
+                        if (apply_move(positions, pos, new_position, status))
+                        {
+                            dprint("------------------> ToP white returned");
+                            return True | take_on_pass_white;
+                        }
+                    }
+                }
             }
             else // That's will be bite 
             {
-                if (trans_val == 1 && positions[new_position] < 0) // If trans_val ok and bited figure is black
+                if (trans_val == 1) // If trans_val ok and bited figure is black
                 {
-                    //  s, new_position);
-                    if (new_position == pos + 7 || new_position == pos + 9 )
+                    if (positions[new_position] < 0)
                     {
-                        return apply_move(positions, pos, new_position, status);
-                    }   
+                        if (new_position == pos + 7 || new_position == pos + 9)
+                        {
+                            return apply_move(positions, pos, new_position, status);
+                        }   
+                    }
                 }
             }
             break;
         case -1: // Black pawn
             if (!pos_busy(positions, new_position))
-            {
+          {
                 if (new_position == pos - 8 && trans_val == -1)
                 {
                     return apply_move(positions, pos, new_position, status);
@@ -754,6 +799,20 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
                 if (new_position == pos - 16 && !pos_busy(positions, pos - 8) &&  trans_val == -2 && pos > 47 && pos < 56)
                 {
                     return apply_move(positions, pos, new_position, status);
+                }
+
+                if (new_position == pos - 7 || new_position == pos - 9) 
+                {
+                    if (positions[new_position + 8] == 1 && take_on_pass_check(positions))
+                    {
+                        dprint("ENTER BLACK");
+                        positions[new_position + 8] = 0;
+                        if (apply_move(positions, pos, new_position, status))
+                        {
+                            dprint("------------------> ToP black returned");
+                            return True | take_on_pass_black;
+                        }
+                    }
                 }
             }
             else // That's will be bite 
@@ -1079,4 +1138,3 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
     }
     return False;
 }
-

@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <Python.h>
 //#define _DEBUG
 #ifdef _DEBUG
     #define dprint(str_val)  printf("%s\n", str_val) 
@@ -32,8 +33,44 @@
 #define pos_busy(positions, pos) (positions[pos])
 #define same_colunm(a, b) !not_same_colunm(a, b)
 #define same_row(a, b) !not_same_row(a, b)
+#define take_on_pass_white 0x30 // Mean thats white take on pass 
+#define take_on_pass_black 0x50 // Mean thats black take on pass
+
+extern char __GLOBAL_OLD_position;
+extern char __GLOBAL_OLD_new_position;
+extern char __GLOBAL_FLAG_is_last_move_data_correct;
+
+/* This struct are part of space of possible moves. 
+Every stucture contain a position, where figure now stand;
+possible position to bite (one at one node);
+and probabilyty - for AI.
+*/
+
+typedef struct 
+{
+    char position; 
+    char posible_bite_position;
+    float probabilyty;
+} bite_prob;
+
+struct node
+{
+    char number;
+    bite_prob data;
+    struct node *next;
+};
+
+typedef struct 
+{
+    char lenth;
+    struct node *first;
+} list;
+
+struct node *list_pop(list *lst, char index);
+list *brute_check(char positions[64], char status, char colour);
+struct node *list_pop(list *lst, char index);
+struct node *fast_pop(list *list);
 
 // Functions, using in pychess module
 char c_move(signed char positions[64], unsigned char pos, unsigned char new_position, char *status);
-
 int is_pos_biten(signed char positions[64], char pos, char is_white_bite, char* array);

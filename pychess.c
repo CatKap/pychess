@@ -1,5 +1,24 @@
 #include "defines.h"
-#include <Python.h>
+
+PyObject *pychess_set_last_move(PyObject *self, PyObject *args)
+{
+    long int pos, new_pos, flag;
+    if(!PyArg_ParseTuple(args, "lll", &pos, &new_pos, &flag))
+    {
+        PyErr_Print();
+        PyErr_SetString(PyExc_AttributeError, "Invalid args for function call.");
+        return Py_None;
+    }
+    __GLOBAL_OLD_new_position = (char)new_pos;
+    __GLOBAL_OLD_position = (char)pos;
+    __GLOBAL_FLAG_is_last_move_data_correct = (char)flag;
+    dprint("====pychess.set_last_move data====");
+    dprintd("ONP", __GLOBAL_OLD_new_position);
+    dprintd("OP", __GLOBAL_OLD_position);
+    dprintd("FLAG", __GLOBAL_FLAG_is_last_move_data_correct);
+    dprint("=================================");
+    return Py_None;
+}
 
 PyObject *pychess_move(PyObject *self, PyObject *args) // Function take a positions array, position (array index), new position and status
 {
@@ -18,6 +37,7 @@ PyObject *pychess_move(PyObject *self, PyObject *args) // Function take a positi
         PyErr_SetString(PyExc_AttributeError, "Positions is not a list!");
         return Py_None;
     }
+
     if (!(PyList_Size(py_positions) == 64)) // Positions must have lenth equal to 64 
     {
         PyErr_Print();
@@ -30,6 +50,7 @@ PyObject *pychess_move(PyObject *self, PyObject *args) // Function take a positi
     }
     char status = (char)l_status;
     char move_flag = c_move(positions, position, new_position, &status);
+
     if(!(status & PARTY_END))
     {
         if (move_flag) // Return a True of False
@@ -43,7 +64,31 @@ PyObject *pychess_move(PyObject *self, PyObject *args) // Function take a positi
     {
        PyList_SET_ITEM(py_ret_positions, (Py_ssize_t)i, PyLong_FromLong((long) positions[i]));  
     }    
-    PyObject *ret_list = PyList_New(2);
+    
+    // If take on pass happend, three elements of array required
+    char size;
+    if (move_flag & take_on_pass_black || move_flag & take_on_pass_white)
+    {
+        size = 3;
+    }
+    else
+        size = 2;
+    
+    PyObject *ret_list = PyList_New(size);
+    // Next two if-s set the position of taked pawn when take on pass happend
+    // About take on pass alert the third element of array
+    if ((move_flag & ~True) == take_on_pass_black)
+    {
+        dprint("---------------->WHITE PAWN POSITION SET");
+        PyObject *white_pawn_pos = PyLong_FromLong((long)new_position + 8); 
+        PyList_SET_ITEM(ret_list, 2, white_pawn_pos);      
+    }
+    if ((move_flag & ~True) == take_on_pass_white) 
+    {
+        dprint("---------------->BLACK PAWN POSITION SET");
+        PyObject *black_pawn_pos = PyLong_FromLong((long)new_position - 8);
+        PyList_SET_ITEM(ret_list, 2, black_pawn_pos);
+    }
     PyList_SET_ITEM(ret_list, 0, py_ret_positions);
     PyList_SET_ITEM(ret_list, 1, PyLong_FromLong((long)status));
     return ret_list;
@@ -104,6 +149,7 @@ PyObject* pychess_is_position_bite(PyObject *self, PyObject *args)
 static PyMethodDef pychess_methods[] = {
     {"move", (PyCFunction)(void(*)(void))pychess_move, METH_VARARGS, NULL},
     {"is_position_bite", (PyCFunction)(void(*)(void))pychess_is_position_bite, METH_VARARGS, NULL},
+    {"set_last_move", (PyCFunction)(void(*)(void))pychess_set_last_move, METH_VARARGS, NULL},
     { NULL, NULL, 0, NULL}
 };
 

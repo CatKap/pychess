@@ -7,6 +7,8 @@ Every stucture contain a position, where figure now stand;
 possible position to bite (one at one node);
 and probabilyty - for AI.
 */
+
+// Structures of list, Ai functions
 typedef struct 
 {
     char position;

@@ -2,7 +2,6 @@
 import pygame 
 from PyChess import pyDesk 
 
-
 class Game:
     def __init__(self, w, h, b_x, b_y, board_addres = None):
         pygame.init()
@@ -24,7 +23,7 @@ class Game:
         fnt = pygame.font.SysFont("silom.ttf", 24)
         h = self.display.get_height()
         while is_run:
-            clk.tick(30)
+            clk.tick(25)
             self.pyDesk.visualize()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -43,7 +42,6 @@ class Game:
                     if event.key == 115: #s
                         save_flag = True
                     elif event.key == 122: #z
-                        print("AAAAA")
                         self.pyDesk.pop()
                          
             if mouse_right_flag:
