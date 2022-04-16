@@ -31,6 +31,7 @@ PyObject *pychess_move(PyObject *self, PyObject *args) // Function take a positi
         PyErr_SetString(PyExc_AttributeError, "Invalid args for function call.");
         return Py_None;
     }
+
     if (!PyList_Check(py_positions)) // py_positions must be a list of positions
     {
         PyErr_Print();
@@ -44,6 +45,7 @@ PyObject *pychess_move(PyObject *self, PyObject *args) // Function take a positi
         PyErr_SetString(PyExc_IndexError, "Invalid volume of positions, must be 64");
         return Py_None;
     }
+    
     for(char i = 0; i < 64; i++)
     {
         positions[i] = (signed char)PyLong_AsLong(PyList_GetItem(py_positions, (Py_ssize_t)i));
@@ -146,10 +148,74 @@ PyObject* pychess_is_position_bite(PyObject *self, PyObject *args)
     return py_ret_list;
 }
 
+PyObject *pychess_space_of_probs(PyObject *self, PyObject *args)
+{
+    PyObject *pos_list;
+    long int figs_type;
+    if(PyArg_ParseTuple(args, "Ol", &pos_list, &figs_type))         
+    {
+        if(!PyList_Check(pos_list)) // pos_list must be list
+        {
+            PyErr_BadArgument();
+            return Py_None;            
+        }
+
+        if(!(PyList_Size(pos_list) == 64))
+        {
+            PyErr_SetString(PyExc_IndexError, "List of positions must contain 64 elements.");
+            return Py_None;
+        }
+
+        char positions[64]; 
+        for(char i = 0; i < 64; i++)
+        {
+            positions[i] = (char)PyLong_AsDouble(PyList_GetItem(pos_list, (ssize_t)i));
+        }
+
+        dprintd("fig_type", figs_type);
+        dprint("Not error.");
+        list *ret_list = brute_check(positions, 0, figs_type);        
+        dprint("So, this for sure. Exit."); 
+        PyObject *py_ret_list = PyList_New((Py_ssize_t)ret_list->lenth);
+
+        int counter = 0;
+        struct node *iterable = ret_list->first;
+        while(iterable!= NULL)
+        {
+            PyObject *py_bite_probe = PyList_New(3);
+            #ifdef _DEBUG
+                if(iterable->data.position == 16) 
+                    {
+                        dprintd("counter", counter);
+                        dprintd("list_len", ret_list->lenth);
+                    }
+            #endif
+            PyList_SET_ITEM(py_bite_probe, 0, PyLong_FromLong((long)iterable->data.position));
+            PyList_SET_ITEM(py_bite_probe, 1, PyLong_FromLong((long)iterable->data.posible_bite_position));
+            PyList_SET_ITEM(py_bite_probe, 2, PyFloat_FromDouble((double)iterable->data.probabilyty));
+            PyList_SET_ITEM(py_ret_list, counter, py_bite_probe);
+            iterable = iterable->next;
+            dprintd("CNT", counter);
+            counter++;
+        }
+
+        return py_ret_list;
+    }    
+    else
+    {
+        PyErr_SetString(PyExc_AttributeError, "Fuction take iterable object and number like argument.");
+        return Py_None;
+    }
+}
+
 static PyMethodDef pychess_methods[] = {
     {"move", (PyCFunction)(void(*)(void))pychess_move, METH_VARARGS, NULL},
     {"is_position_bite", (PyCFunction)(void(*)(void))pychess_is_position_bite, METH_VARARGS, NULL},
+<<<<<<< HEAD
     {"set_last_move", (PyCFunction)(void(*)(void))pychess_set_last_move, METH_VARARGS, NULL},
+=======
+    {"space_of_probs", (PyCFunction)(void(*)(void))pychess_space_of_probs, METH_VARARGS, NULL},
+>>>>>>> dev
     { NULL, NULL, 0, NULL}
 };
 
