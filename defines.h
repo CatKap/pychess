@@ -40,10 +40,6 @@ extern char __GLOBAL_OLD_position;
 extern char __GLOBAL_OLD_new_position;
 extern char __GLOBAL_FLAG_is_last_move_data_correct;
 
-struct node *list_pop(list *lst, char index);
-list *brute_check(char positions[64], char status, char colour);
-struct node *list_pop(list *lst, char index);
-struct node *fast_pop(list *list);
 
 // Structures of list, Ai functions
 
