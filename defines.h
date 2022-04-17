@@ -40,32 +40,6 @@ extern char __GLOBAL_OLD_position;
 extern char __GLOBAL_OLD_new_position;
 extern char __GLOBAL_FLAG_is_last_move_data_correct;
 
-/* This struct are part of space of possible moves. 
-Every stucture contain a position, where figure now stand;
-possible position to bite (one at one node);
-and probabilyty - for AI.
-*/
-
-typedef struct 
-{
-    char position; 
-    char posible_bite_position;
-    float probabilyty;
-} bite_prob;
-
-struct node
-{
-    char number;
-    bite_prob data;
-    struct node *next;
-};
-
-typedef struct 
-{
-    char lenth;
-    struct node *first;
-} list;
-
 struct node *list_pop(list *lst, char index);
 list *brute_check(char positions[64], char status, char colour);
 struct node *list_pop(list *lst, char index);
