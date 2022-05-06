@@ -1,4 +1,3 @@
-#test
 #!/usr/bin/env python3
 import pygame 
 from PyChess import pyDesk 
@@ -83,9 +82,5 @@ class Game:
 
 if __name__ == "__main__":
     game = Game(600, 600, 0, 600, board_addres="/home/kapitan/Progects/Chess/Saves/last_save.chsv")  
-   # game.pyDesk.desk_positions = [0] * 64
-   # game.pyDesk.desk_positions[45] = 6
-   # game.pyDesk.desk_positions[1] = 5
-   # game.pyDesk.desk_positions[61] = -6
     print(game.pyDesk.is_position_bite(55))
     game.debug()

@@ -1,5 +1,7 @@
 #include "defines.h"
 
+
+
 PyObject *pychess_set_last_move(PyObject *self, PyObject *args)
 {
     long int pos, new_pos, flag;
@@ -12,11 +14,6 @@ PyObject *pychess_set_last_move(PyObject *self, PyObject *args)
     __GLOBAL_OLD_new_position = (char)new_pos;
     __GLOBAL_OLD_position = (char)pos;
     __GLOBAL_FLAG_is_last_move_data_correct = (char)flag;
-    dprint("====pychess.set_last_move data====");
-    dprintd("ONP", __GLOBAL_OLD_new_position);
-    dprintd("OP", __GLOBAL_OLD_position);
-    dprintd("FLAG", __GLOBAL_FLAG_is_last_move_data_correct);
-    dprint("=================================");
     return Py_None;
 }
 
@@ -27,23 +24,22 @@ PyObject *pychess_move(PyObject *self, PyObject *args) // Function take a positi
     PyObject *py_positions;
     if (!PyArg_ParseTuple(args, "Olll", &py_positions, &position, &new_position, &l_status))
     {
-        PyErr_Print();
         PyErr_SetString(PyExc_AttributeError, "Invalid args for function call.");
-        return Py_None;
+        return NULL;
     }
+
     if (!PyList_Check(py_positions)) // py_positions must be a list of positions
     {
-        PyErr_Print();
         PyErr_SetString(PyExc_AttributeError, "Positions is not a list!");
-        return Py_None;
+        return NULL;
     }
 
     if (!(PyList_Size(py_positions) == 64)) // Positions must have lenth equal to 64 
     {
-        PyErr_Print();
-        PyErr_SetString(PyExc_IndexError, "Invalid volume of positions, must be 64");
-        return Py_None;
+        PyErr_SetString(PyExc_IndexError, "Invalid lenth of positions array, must be 64");
+        return NULL;
     }
+
     for(char i = 0; i < 64; i++)
     {
         positions[i] = (signed char)PyLong_AsLong(PyList_GetItem(py_positions, (Py_ssize_t)i));
@@ -104,8 +100,8 @@ PyObject* pychess_is_position_bite(PyObject *self, PyObject *args)
     
     if(!PyArg_ParseTuple(args, "OlO", &py_positions, &suspect_position, &py_is_white_bite))
     {
-        dprint("One");
-        return Py_None;
+        PyErr_SetString(PyExc_AttributeError, "Bad agruments for function call");
+        return NULL;
     }
     
     if (PyBool_Check(py_is_white_bite))
@@ -121,13 +117,13 @@ PyObject* pychess_is_position_bite(PyObject *self, PyObject *args)
     }
     else
     {
-        dprint("Two");
-        return Py_None;
+        PyErr_SetString(PyExc_AttributeError, "last argument must be boolean");
+        return NULL;
     }
     if(!(PyList_Size(py_positions) == 64))
     {
-        dprint("Three");
-        return Py_None;
+        PyErr_SetString(PyExc_IndexError, "Invalid lenth of positions array, must be 64");
+        return NULL;
     }
     for (int i = 0; i < 64; i++)
     {
@@ -155,8 +151,8 @@ PyObject *pychess_space_of_probs(PyObject *self, PyObject *args)
     {
         if(!PyList_Check(pos_list)) // pos_list must be list
         {
-            PyErr_BadArgument();
-            return Py_None;            
+            PyErr_SetString(PyExc_AttributeError, "list of positions must be list");
+            return NULL;            
         }
 
         if(!(PyList_Size(pos_list) == 64))
@@ -202,8 +198,8 @@ PyObject *pychess_space_of_probs(PyObject *self, PyObject *args)
     }    
     else
     {
-        PyErr_SetString(PyExc_AttributeError, "Fuction take iterable object and number like argument.");
-        return Py_None;
+        PyErr_SetString(PyExc_AttributeError, "Fuction must take iterable object and number like argument.");
+        return NULL;
     }
 }
 

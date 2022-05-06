@@ -1,4 +1,3 @@
-#test
 from importlib import __import__
 
 import pygame
@@ -336,6 +335,6 @@ class test:
 if __name__ == "__main__":
     print("It is a module.")
     d = desk()
-    print(d.desk_positions)
-    pychess.set_last_move(3, 3, 1)
+    pychess.move([0] * 65, 1, 2, 0)
+
     
