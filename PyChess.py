@@ -107,6 +107,8 @@ class desk:
             self.take_on_pass_colour_set = lambda new_position: not bool(self.desk_positions[new_position]/abs(self.desk_positions[new_position]))
         else:
             self.take_on_pass_colour_set = lambda null: self.next_move_is_white
+        
+        print("debug is", self.__DEBUG)
 
 
     @property
@@ -230,9 +232,10 @@ class desk:
             print("File not found!")
 
 class pyDesk(desk):
-    def __init__(self, addres, pygame, display, board_pos = [0, 0]):
+    def __init__(self, addres, pygame, display, board_pos = [0, 0], debug = False):
 
-        super().__init__()
+        print("take debug is", debug)
+        super().__init__(debug = debug)
         self.pygame = pygame
         self.display = display
         self.h = self.display.get_rect()[1]
@@ -334,7 +337,5 @@ class test:
 
 if __name__ == "__main__":
     print("It is a module.")
-    d = desk()
-    pychess.move([0] * 65, 1, 2, 0)
 
     

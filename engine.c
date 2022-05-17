@@ -574,12 +574,12 @@ char mate_stalemate_check(signed char positions[64], unsigned char king_position
         else
         {
             // Stalemate checking    
-
             for (char pos = 0; pos < 64; pos++)
             {
                 if (king_type && positions[pos] > 0 || !king_type && positions[pos] < 0)
                 {
-                    if(!figure_is_blocked(positions, pos, king_position))
+                    /* figure_is_blocked also cheks check on king position */
+                    if(!figure_is_blocked(positions, pos, king_position)) 
                     {
                         dprint("/EXIT/");
                         goto ret_false;
@@ -590,8 +590,8 @@ char mate_stalemate_check(signed char positions[64], unsigned char king_position
         }
     }
     ret_false:
-        dprint("RETURN FALSE FROM MATE_STALEMATE_CHEK");
         dprintd("   King is", king_type);
+        dprint("RETURN FALSE FROM MATE_STALEMATE_CHEK");
         if (king_type)
             positions[king_position] = 6;
         else
@@ -599,6 +599,8 @@ char mate_stalemate_check(signed char positions[64], unsigned char king_position
         return False;
 
     ret_true:
+        dprintd("   King is", king_type);
+        dprint("RETURN TRUE FROM MATE_STALEMATE_CHECK");
         if (king_type)
             positions[king_position] = 6;
         else
@@ -634,17 +636,14 @@ char kings_check(signed char positions[64], signed char fig_type, char *status) 
     if (is_pos_biten(positions, black_king_position, True, NULL))
     { 
         if (*status & BLACK_ON_CHECK && fig_type < 0)
-        {    
-            
             flag = False;
-        }
         else
         {
             *status = *status | BLACK_ON_CHECK;
             dprint("Status applyed");
             if(mate_stalemate_check(positions, black_king_position, False) == 1)
                 {
-                    dprint("BLACK MUST DIE! ///////");
+                    dprint(" Black mate!");
                     *status = 0 | PARTY_END | IS_MATE; // Side is black  
                 }
         }
@@ -685,6 +684,30 @@ char kings_check(signed char positions[64], signed char fig_type, char *status) 
     }
     positions[white_king_position] = 6;
     positions[black_king_position] = -6;
+    // End game check if all figures out
+    char whites, blacks;
+    whites = 0;
+    blacks = 0; 
+    for (char i = 0; i < 64; i++) 
+    {
+        if (positions[i] > 0)
+            whites++;
+
+        if (positions[i] < 0)
+            blacks++;
+        // In case pos[i] = 0 mean not figure on position
+    }
+    if(whites == 1 && blacks == 1)
+    {
+        dprint("    PARTY END IN DRAW - NO FIGURES!");
+        // This mean only kings on field
+        // Who makes last move applyed like 'lost' side
+        if(fig_type > 0)
+            *status = 0x00 | PARTY_END;
+        else
+            *status = 0x00 | PARTY_END | IS_SIDE_WHITE;
+    } 
+
     return flag;
 }
 

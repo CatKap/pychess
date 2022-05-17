@@ -29,6 +29,21 @@ void list_add(list *lst, bite_prob dt)
     dprintd("LENTH", lst->lenth);
 }
 
+char list_append_list(list *lst, list *appended, char number)
+{
+    struct node *search = lst->first;
+    while (search->next != NULL)
+    {
+        if(search->number == number)
+        {
+            search->nextlist = appended;
+            return True;
+        }
+        search = search->next;
+    }
+    return False;
+}
+
 struct node *list_get(list *lst, char index)
 {
     if(lst->lenth == 0 || lst->lenth < index)

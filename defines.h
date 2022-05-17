@@ -25,8 +25,9 @@
 // If party end the fist bit is high: 1 _ _ _ _ _ _ _ (num is lower than zero)
 #define PARTY_END 0x80
 #define IS_MATE 0x40
-#define IS_SIDE_WHITE 0x20 // mean lost side
-// 
+#define IS_SIDE_WHITE 0x20 // mean lost side, in case of stalemate indicates whish king was stalemated, in case of draw indicates the last move side 
+
+                           
 #define trans_val(a, b) ((a) / 8 -  (b) / 8)
 #define not_same_row(a, b) ((a) / 8 - (b) / 8)
 #define not_same_colunm(a, b) ((a) % 8 - (b) % 8)

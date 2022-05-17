@@ -1,17 +1,36 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.10
 import pygame 
 from PyChess import pyDesk 
+from gameapi import smenu
 
 class Game:
-    def __init__(self, w, h, b_x, b_y, board_addres = None):
+    def __init__(self, w, h, b_x, b_y, board_addres = None, debug = False):
         pygame.init()
+        self.__DEBUG = debug
         self.display = pygame.display.set_mode((w, h))
-        self.pyDesk = pyDesk(pygame = pygame, addres = "/home/kapitan/Progects/Chess/materials/png/", display = self.display, board_pos = (b_x, b_y))
+        self.pyDesk = pyDesk(pygame = pygame, addres = "/home/kapitan/Progects/Chess/materials/png/", display = self.display, board_pos = (b_x, b_y), debug = self.__DEBUG)
         if board_addres:
             self.pyDesk.load(board_addres)
         
     def run():
         pass
+
+    
+    def menudebug(self):
+        print("menu test")
+        menu = smenu({"test1" : 1, "test2" : 2, "test3" : 3}, (100, 100), "/home/kapitan/Progects/Chess/materials/menu/", pygame.font.SysFont("silom.ttf", 50), self.display)
+
+        clk = pygame.time.Clock()
+        is_run = True
+        h = self.display.get_height()
+        self.display.fill((255, 255, 255))
+        while is_run:
+            clk.tick(25)
+            menu.visualize()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    is_run = False
+            pygame.display.flip()
 
     def debug(self):
         bite_im = pygame.image.load(self.pyDesk.addres + "bite_rect.png")
@@ -23,7 +42,6 @@ class Game:
         fnt = pygame.font.SysFont("silom.ttf", 24)
         h = self.display.get_height()
         while is_run:
-            clk.tick(25)
             self.pyDesk.visualize()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -54,6 +72,7 @@ class Game:
                     print("Position on selection ({0}) is not bite.".format(self.pyDesk.get_coursor_position(x, y)))
 
             if mouse_left_flag:
+                event.pos = pygame.mouse.get_pos()
                 x, y = tuple(event.pos)
                 y = h - y
                 im1 = fnt.render("Absolute: {x}, {y}, {pos}".format(x = event.pos[0], y = h - event.pos[1], pos = self.pyDesk.get_coursor_position(x, y)) , True, (255, 0, 0))
@@ -81,6 +100,6 @@ class Game:
         pygame.quit()
 
 if __name__ == "__main__":
-    game = Game(600, 600, 0, 600, board_addres="/home/kapitan/Progects/Chess/Saves/last_save.chsv")  
+    game = Game(600, 600, 0, 600, board_addres="/home/kapitan/Progects/Chess/Saves/last_save.chsv", debug = True)  
     print(game.pyDesk.is_position_bite(55))
     game.debug()
