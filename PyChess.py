@@ -4,16 +4,6 @@ import pygame
 pychess = __import__("pychess")
 
 
-
-class C_API:
-    
-    @staticmethod
-    def move(positions[64]:int, position:int, new_position:int, status:int):
-        return pychess.move(positions, position, new_position, status)
-
-
-
-
 class status:
     def __init__(self, status):
         self.status = status
@@ -89,20 +79,30 @@ class desk:
             self.desk_positions = [0]*64
             for i in range(8, 16):
                 self.desk_positions[i] = 1 # Pawn
-            self.desk_positions[0], self.desk_positions[7] = 4, 4   # Towers 
-            self.desk_positions[1], self.desk_positions[6] = 2, 2   # Knights
-            self.desk_positions[2], self.desk_positions[5] = 3, 3   # Bishops
-            self.desk_positions[3], self.desk_positions[4] = 5, 6   # Queen, king 
+                self.desk_positions[0], self.desk_positions[7] = 4, 4   # Towers 
+                self.desk_positions[1], self.desk_positions[6] = 2, 2   # Knights
+                self.desk_positions[2], self.desk_positions[5] = 3, 3   # Bishops
+                self.desk_positions[3], self.desk_positions[4] = 5, 6   # Queen, king 
 
             for i in range(48, 56):
                 self.desk_positions[i] = -1
-            self.desk_positions[56], self.desk_positions[63] = -4, -4 # Towers 
-            self.desk_positions[57], self.desk_positions[62] = -2, -2 # Knights
-            self.desk_positions[58], self.desk_positions[61] = -3, -3 # Bishops
-            self.desk_positions[59], self.desk_positions[60] = -5, -6 # Queen, king
+                self.desk_positions[56], self.desk_positions[63] = -4, -4 # Towers 
+                self.desk_positions[57], self.desk_positions[62] = -2, -2 # Knights
+                self.desk_positions[58], self.desk_positions[61] = -3, -3 # Bishops
+                self.desk_positions[59], self.desk_positions[60] = -5, -6 # Queen, king
             
             self.status = status([False for _ in range(8)])
             self.next_move_is_white = True
+        #self.id = dict(zip(self.positions, [i for i in range(32)])) # Convert a position to id. Updatable when move
+        self.position_busy = [True if i == 0 else False for i in self.desk_positions]
+        self._move_stack = []
+        self._bite_stack = []
+        self.desk_positions[57], self.desk_positions[62] = -2, -2 # Knights
+        self.desk_positions[58], self.desk_positions[61] = -3, -3 # Bishops
+        self.desk_positions[59], self.desk_positions[60] = -5, -6 # Queen, king
+            
+        self.status = status([False for _ in range(8)])
+        self.next_move_is_white = True
         #self.id = dict(zip(self.positions, [i for i in range(32)])) # Convert a position to id. Updatable when move
         self.position_busy = [True if i == 0 else False for i in self.desk_positions]
         self._move_stack = []
@@ -268,16 +268,6 @@ class pyDesk(desk):
 
     def move(self, position, new_position):
         if super().move(position, new_position):
-            self.is_figure_selected = False
-            return True
-        return False
-
-
-    def sprites_load(self): 
-        figures = [None] # None, white_pawn, white_knigth, white_bishop, white_castle, white_queen, white_king, black_king, black_queen, black_tower, black_bishop, black_knigth, black_pawn
-        fig_types = ["pawn", "knight", "bishop", "castle", "queen", "king"]
-        for figure in fig_types:
-                print("Loading {addr}white_{lit}.png".format(addr = self.addres,  lit = figure))
                 figures.append(self.pygame.image.load("{addr}white_{lit}.png".format(addr = self.addres, lit = figure)))
         for figure in fig_types[::-1]:
                 print("Loading {addr}black_{lit}.png".format(addr = self.addres,  lit = figure))
@@ -346,5 +336,7 @@ class test:
 
 if __name__ == "__main__":
     print("It is a module.")
+    pychess.move()
+
 
     

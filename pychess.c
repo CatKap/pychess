@@ -16,22 +16,8 @@ PyObject *pychess_set_last_move(PyObject *self, PyObject *args)
     return Py_None;
 }
 
-char translate_positions(PyObject *py_positions, char positions[64])
+void *translate_positions(PyObject *py_positions, char positions[64])
 {
-	return 0;
-}
-
-PyObject *pychess_move(PyObject *self, PyObject *args) // Function take a positions array, position (array index), new position and status
-{
-    long int position, new_position, l_status;
-    signed char positions[64];
-    PyObject *py_positions;
-    if (!PyArg_ParseTuple(args, "Olll", &py_positions, &position, &new_position, &l_status))
-    {
-        PyErr_SetString(PyExc_AttributeError, "Invalid args for function call.");
-        return NULL;
-    }
-
     if (!PyList_Check(py_positions)) // py_positions must be a list of positions
     {
         PyErr_SetString(PyExc_AttributeError, "Positions is not a list!");
@@ -48,6 +34,23 @@ PyObject *pychess_move(PyObject *self, PyObject *args) // Function take a positi
     {
         positions[i] = (signed char)PyLong_AsLong(PyList_GetItem(py_positions, (Py_ssize_t)i));
     }
+	return (void*)1;
+}
+
+PyObject *pychess_move(PyObject *self, PyObject *args) // Function take a positions array, position (array index), new position and status
+{
+    long int position, new_position, l_status;
+    signed char positions[64];
+    PyObject *py_positions;
+    if (!PyArg_ParseTuple(args, "Olll", &py_positions, &position, &new_position, &l_status))
+    {
+        PyErr_SetString(PyExc_AttributeError, "Invalid args for function call.");
+        return NULL;
+    }
+
+	if(translate_positions(py_positions, positions) == NULL)
+		return NULL;
+
     char status = (char)l_status;
     char move_flag = c_move(positions, position, new_position, &status);
 
