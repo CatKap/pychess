@@ -4,6 +4,16 @@ import pygame
 pychess = __import__("pychess")
 
 
+
+class C_API:
+    
+    @staticmethod
+    def move(positions[64]:int, position:int, new_position:int, status:int):
+        return pychess.move(positions, position, new_position, status)
+
+
+
+
 class status:
     def __init__(self, status):
         self.status = status
@@ -328,7 +338,6 @@ class pyDesk(desk):
 
 
 class test:
-    
     def prob_space_test(self):
         dsk = desk()
         print("Without error:")

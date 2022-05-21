@@ -21,6 +21,7 @@ void print_desk(char positions[64], unsigned char tested)
     }
 }
 
+
 char write_position(char positions[64],  char position, char value)
 { 
    unsigned char pos = (unsigned char)(position);  
@@ -61,7 +62,23 @@ int figure_is_blocked_test(char figure)
     }
 }
 
+void arr_mt_test(char array[5])
+{
+	for(char i = 0; i < 5; i++)
+	{
+		printf("%d", array[i]);
+	}
+	//array[1] = 5;
+}
+
 int main(void)
 {
-    figure_is_blocked_test(3);
+	printf("Entering.");
+	char test_array[5] = {1, 2, 3, 4, 5};
+	//arr_mt_test(test_array);
+	printf("%s", test_array[0]);
 }
+
+
+
+

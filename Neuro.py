@@ -1,6 +1,17 @@
 import tensorflow as tf
 import numpy as np
-import PyChess as pc
+from PyChess import C_API as cp
+
+class agent:
+
+    def __init__(self, side, depth):
+        self.side = side
+        self.depth = depth
+        self.__Caddres = 0x0 # Contain a C structure addres, for optimization
+
+    
+    def cost_func(self, positions, who_move):
+        return network(positions)
 
 
 @tf.Module

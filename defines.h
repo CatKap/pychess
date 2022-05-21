@@ -41,7 +41,6 @@ extern char __GLOBAL_OLD_position;
 extern char __GLOBAL_OLD_new_position;
 extern char __GLOBAL_FLAG_is_last_move_data_correct;
 
-
 // Structures of list, Ai functions
 
 /* This struct are part of space of possible moves. 
@@ -70,6 +69,15 @@ typedef struct
     struct node *first;
 } list;
 
+struct agent // Contains all data for ML algorytms proccecing    
+{
+	unsigned int depth; // Recursion depth
+	char side;          // True if white
+	char positions[64]; // Array for positions
+	void* some_thing;    // For extendable 
+	
+};
+
 struct node *list_pop(list *lst, char index);
 list *brute_check(char positions[64], char status, char colour);
 struct node *list_pop(list *lst, char index);
@@ -78,3 +86,7 @@ struct node *fast_pop(list *list);
 // Functions, using in pychess module
 char c_move(signed char positions[64], unsigned char pos, unsigned char new_position, char *status);
 int is_pos_biten(signed char positions[64], char pos, char is_white_bite, char* array);
+char is_one_step_transfer_applyed(unsigned char pos1, unsigned char pos2, char figure);
+char figure_is_blocked(signed char positions[64], unsigned char position, unsigned char king_position);
+
+

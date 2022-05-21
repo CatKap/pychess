@@ -8,10 +8,9 @@ list *list_create()
    new->first = NULL; 
    return new;
 }
-
+	
 void list_add(list *lst, bite_prob dt)
 {
-
     #ifdef _DEBUG
         dprint("+++++++++++++++++++++++ADD DEBUG 16");
         dprintd("pos", dt.position);
@@ -29,20 +28,6 @@ void list_add(list *lst, bite_prob dt)
     dprintd("LENTH", lst->lenth);
 }
 
-char list_append_list(list *lst, list *appended, char number)
-{
-    struct node *search = lst->first;
-    while (search->next != NULL)
-    {
-        if(search->number == number)
-        {
-            search->nextlist = appended;
-            return True;
-        }
-        search = search->next;
-    }
-    return False;
-}
 
 struct node *list_get(list *lst, char index)
 {
@@ -123,6 +108,7 @@ struct node *fast_pop(list *list)
     return NULL; // ERRNO SEE
 }
 
+
 list* brute_check(char positions[64], char status, char colour)
 {
     list *ret_list = list_create();
@@ -178,8 +164,20 @@ float fig_cost(char figure)
 }
 
 
+char* positions_copy(char positions[64])
+{
+	char *new[64];
 
-int main(void)
+	for (char i = 0; i < 64; i++)
+	{
+		*new[i] = positions[i];
+	}
+	return *new;
+}
+
+
+// If you wanna call it, see chesstest (contain call of this function in it's main func)
+int ai_main(void)
 {
     char positions[64] = {
     4, 2, 3, 5, 6, 3, 2, 4, 
@@ -199,6 +197,4 @@ int main(void)
     }
     printf("Total is: %d", space->lenth);
 }
-
-
 

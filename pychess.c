@@ -1,7 +1,6 @@
 #include "defines.h"
 
-
-
+// Function require to implement take on pass in engine. Set to gloabal varaibles move information. Use to set last from python code
 PyObject *pychess_set_last_move(PyObject *self, PyObject *args)
 {
     long int pos, new_pos, flag;
@@ -15,6 +14,11 @@ PyObject *pychess_set_last_move(PyObject *self, PyObject *args)
     __GLOBAL_OLD_position = (char)pos;
     __GLOBAL_FLAG_is_last_move_data_correct = (char)flag;
     return Py_None;
+}
+
+char translate_positions(PyObject *py_positions, char positions[64])
+{
+	return 0;
 }
 
 PyObject *pychess_move(PyObject *self, PyObject *args) // Function take a positions array, position (array index), new position and status
@@ -90,6 +94,8 @@ PyObject *pychess_move(PyObject *self, PyObject *args) // Function take a positi
     return ret_list;
 }
 
+//Sees if position bite, return array, where first number says how many fiuges bites this position, and it positions in last part of array
+// Does not pay attention to king, check, mate, etc. 
 PyObject* pychess_is_position_bite(PyObject *self, PyObject *args)
 {
     signed char positions[64];
@@ -143,6 +149,7 @@ PyObject* pychess_is_position_bite(PyObject *self, PyObject *args)
 }
 
 
+// Returns space of possible moves in array [ [position, new_position, probabylity], ..., ]
 PyObject *pychess_space_of_probs(PyObject *self, PyObject *args)
 {
     PyObject *pos_list;
@@ -203,6 +210,47 @@ PyObject *pychess_space_of_probs(PyObject *self, PyObject *args)
     }
 }
 
+
+// AI fuctions
+// Return a addres of agent in python int type
+PyObject *pychess_init_AI_agent(PyObject *self, PyObject *args)
+{
+	long int depth, side; 
+	PyObject *py_positions;
+	if(!PyArg_ParseTuple(args, "llO", &depth, &side,  &py_positions))
+	{
+		PyErr_SetString(PyExc_AttributeError, "Bad agrguments");
+		return NULL;
+	}
+
+	// Append depth and side of agent
+	struct agent *ret_agent_addres = malloc(sizeof(struct agent));
+	ret_agent_addres->depth = (unsigned char)depth;
+	ret_agent_addres->side = (char)side;
+
+    if (!PyList_Check(py_positions)) // py_positions must be a list of positions
+    {
+        PyErr_SetString(PyExc_AttributeError, "Positions is not a list!");
+        return NULL;
+    }
+
+    if (!(PyList_Size(py_positions) == 64)) // Positions must have lenth equal to 64 
+    {
+        PyErr_SetString(PyExc_IndexError, "Invalid lenth of positions array, must be 64");
+        return NULL;
+    }
+
+    for(char i = 0; i < 64; i++)
+    {
+        ret_agent_addres->positions[i] = (signed char)PyLong_AsLong(PyList_GetItem(py_positions, (Py_ssize_t)i));
+    }
+
+	return PyLong_FromLong((long long)ret_agent_addres);
+}
+
+
+
+// Python module required stack
 static PyMethodDef pychess_methods[] = {
     {"move", (PyCFunction)(void(*)(void))pychess_move, METH_VARARGS, NULL},
     {"is_position_bite", (PyCFunction)(void(*)(void))pychess_is_position_bite, METH_VARARGS, NULL},
