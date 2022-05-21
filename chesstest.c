@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "pychess.c"
+#include "defines.h"
 
 void print_desk(char positions[64], unsigned char tested)
 {
