@@ -64,19 +64,16 @@ int figure_is_blocked_test(char figure)
 
 void arr_mt_test(char array[5])
 {
-	for(char i = 0; i < 5; i++)
-	{
-		printf("%d", array[i]);
-	}
-	//array[1] = 5;
+	array[0] = 5;
 }
 
 int main(void)
 {
-	printf("Entering.");
+	printf("Entering.\n");
 	char test_array[5] = {1, 2, 3, 4, 5};
-	//arr_mt_test(test_array);
-	printf("%s", test_array[0]);
+	arr_mt_test(test_array);
+	printf("%d\n", test_array[0]);
+	return 0;
 }
 
 
