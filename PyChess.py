@@ -79,17 +79,17 @@ class desk:
             self.desk_positions = [0]*64
             for i in range(8, 16):
                 self.desk_positions[i] = 1 # Pawn
-                self.desk_positions[0], self.desk_positions[7] = 4, 4   # Towers 
-                self.desk_positions[1], self.desk_positions[6] = 2, 2   # Knights
-                self.desk_positions[2], self.desk_positions[5] = 3, 3   # Bishops
-                self.desk_positions[3], self.desk_positions[4] = 5, 6   # Queen, king 
+            self.desk_positions[0], self.desk_positions[7] = 4, 4   # Towers 
+            self.desk_positions[1], self.desk_positions[6] = 2, 2   # Knights
+            self.desk_positions[2], self.desk_positions[5] = 3, 3   # Bishops
+            self.desk_positions[3], self.desk_positions[4] = 5, 6   # Queen, king 
 
             for i in range(48, 56):
                 self.desk_positions[i] = -1
-                self.desk_positions[56], self.desk_positions[63] = -4, -4 # Towers 
-                self.desk_positions[57], self.desk_positions[62] = -2, -2 # Knights
-                self.desk_positions[58], self.desk_positions[61] = -3, -3 # Bishops
-                self.desk_positions[59], self.desk_positions[60] = -5, -6 # Queen, king
+            self.desk_positions[56], self.desk_positions[63] = -4, -4 # Towers 
+            self.desk_positions[57], self.desk_positions[62] = -2, -2 # Knights
+            self.desk_positions[58], self.desk_positions[61] = -3, -3 # Bishops
+            self.desk_positions[59], self.desk_positions[60] = -5, -6 # Queen, king
             
             self.status = status([False for _ in range(8)])
             self.next_move_is_white = True
