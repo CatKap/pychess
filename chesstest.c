@@ -60,6 +60,7 @@ int figure_is_blocked_test(char figure)
             positions[b] = 0;
         }
     }
+	return 0;
 }
 
 void arr_mt_test(char array[5])
@@ -69,12 +70,29 @@ void arr_mt_test(char array[5])
 
 int main(void)
 {
-	printf("Entering.\n");
-	char test_array[5] = {1, 2, 3, 4, 5};
-	arr_mt_test(test_array);
-	printf("%d\n", test_array[0]);
+	char positions [64] = 
+	{4, 2, 3, 5, 6, 3, 2, 4, 
+     1, 1, 1, 0, 1, 1, 1, 1, 
+	 0, 0, 0, 0, 0, 0, 0, 0, 
+	 0, 0, 0, 1, 0, 0, 0, 0, 
+	 0, 0, 0, 0, 0, 0, 0, 0, 
+	 0, 0, 0, 0, 0, 0, 0, 0, 
+	-1,-1,-1,-1,-1,-1,-1,-1, 
+	-4,-2,-3,-5,-6,-3,-2,-4};
+
+	size_t lnt = 1;	
+	list *ret_list = new_brute_check(positions, 0, 1); 
+	struct node *itr = ret_list->first; 	
+	printf("TEST: [");
+	while(itr != NULL)
+	{
+		printf("[%d, %d], ", itr->data.position, itr->data.posible_bite_position);
+		itr = itr->next;	
+	}
+	printf("]\n");
 	return 0;
 }
+
 
 
 

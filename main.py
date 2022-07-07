@@ -63,6 +63,7 @@ class Game:
                         self.pyDesk.pop()
                          
             if mouse_right_flag:
+                event.pos = pygame.mouse.get_pos()
                 x, y = tuple(event.pos)
                 y = h - y
                 ret = self.pyDesk.is_position_bite(self.pyDesk.get_coursor_position(x, y))
@@ -86,7 +87,7 @@ class Game:
                     mouse_left_flag = False
                 self.pyDesk.select_figure(x, y)            
             
-            for pos in range(0):
+            for pos in range(64):
                 if self.pyDesk.is_position_bite(pos, True)[0]:
                     x, y = self.pyDesk.screen_positions[pos]
                     r = bite_im.get_rect()

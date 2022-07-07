@@ -2,7 +2,7 @@
 char king_points[8] = {-9, -8, -7, -1, 1, 7, 8, 9};
 char knight_points[8] = {-17, -15, -10, -6, 6, 10, 15, 17};
 char queen_steps[8] = {-9, -7, 7, 9, -8, -1, 1, 8};
-char* bishop_steps = queen_steps;
+char* bishop_steps = queen_steps; // Bishop steps is just first four steps of queen
 char* tower_steps = queen_steps + 4;
 char __GLOBAL_OLD_position = -1;
 char __GLOBAL_OLD_new_position = -1;
@@ -14,6 +14,7 @@ char is_pos_exsist(unsigned char pos)
         return False;
     return True;
 }
+
 
 char is_figures_have_same_colour(char fig_1, char fig_2)
 {
@@ -161,11 +162,11 @@ char is_one_step_transfer_applyed(unsigned char pos1, unsigned char pos2, char f
     }
 }
 
-int is_pos_biten(signed char positions[64], char pos, char is_white_bite, char* array) //FIXME!
+int is_pos_biten(signed char positions[64], char pos, char is_white_bite, char* array) 
 {                                 
     if (!is_pos_exsist(pos)) 
     {
-        dprintd("POSITION NOT EXSIST!", pos);
+        //dprintd("POSITION NOT EXSIST!", pos);
         return False;
     }
     // Vertical check
@@ -324,7 +325,6 @@ int is_pos_biten(signed char positions[64], char pos, char is_white_bite, char* 
         }
     }
     add_element(array, count, 0);
-     
     return count;
 }
 
@@ -352,46 +352,46 @@ char make_sure(signed char positions[64], unsigned char pos, unsigned char new_p
 
 char king_is_blocked(signed char positions[64], char king_position, char king_type)
 {
-    dprint("KING CHECK START"); 
+    //dprint("KING CHECK START"); 
     for(char i = 0; i < 8; i++)
     {
         unsigned char suspected_pos = king_position + king_points[i];
-        dprintd("KP", king_points[i]);
+        //dprintd("KP", king_points[i]);
 
         // -6 + 12 * king_type because if black, king_type must be zero, in another case -6 + 12 = 6, white king
         if(!is_transfer_applyed(king_position, suspected_pos, -6 + 12 * king_type))
             continue;
         
-        dprintd("SUS_POSB", is_pos_biten(positions, suspected_pos, not(king_type), NULL));
-        dprintd("SUS_P", suspected_pos);
-        dprintd("NOT", not(king_type));
+        //dprintd("SUS_POSB", is_pos_biten(positions, suspected_pos, not(king_type), NULL));
+        //dprintd("SUS_P", suspected_pos);
+        //dprintd("NOT", not(king_type));
         if (!is_pos_biten(positions, suspected_pos, not(king_type), NULL))
         {
-            dprint("GET THIS");
+            //dprint("GET THIS");
             if (!pos_busy(positions, suspected_pos))
             {
-                dprint("First not pass!");
-                dprintd("count value i", king_position + king_points[i]); //FIXME !!!
+                //dprint("First not pass!");
+                //dprintd("count value i", king_position + king_points[i]); //FIXME !!!
                 return False;
             }
             // Position is not bite
             if (king_type && positions[suspected_pos] < 0 || !king_type &&positions[suspected_pos] > 0) 
             {
-                dprint("Sec fail.");
-                dprintd("   positions[susp_pos]", positions[suspected_pos]);
+                //dprint("Sec fail.");
+                //dprintd("   positions[susp_pos]", positions[suspected_pos]);
                 return False;
             }
         }
     }
-    dprint("TRUE RET");
+    //dprint("TRUE RET");
     return True;
 }
 
 char figure_is_blocked(signed char positions[64], unsigned char position, unsigned char king_position) 
 {
-    dprint("FIG IS BLOCKED CALL"); 
-    dprintd("AT POSITION", position);
-    dprintd("KING ON POSITION", king_position);
+    //dprint("FIG IS BLOCKED CALL"); 
+    //dprintd("AT POSITION", position);
+    //dprintd("KING ON POSITION", king_position);
     char lenth = 8;
     char *array = queen_steps;
     char colour;
@@ -402,7 +402,7 @@ char figure_is_blocked(signed char positions[64], unsigned char position, unsign
        colour = -1; 
     else 
         colour = 1;    
-    dprintd("REAL POS ANSWER:", positions[position]);
+    //dprintd("REAL POS ANSWER:", positions[position]);
     switch(abs(positions[position]))
     { 
         case 1: 
@@ -417,14 +417,14 @@ char figure_is_blocked(signed char positions[64], unsigned char position, unsign
                     }    
                 }
             }
-            dprint("PAWN CHECK");
+            //dprint("PAWN CHECK");
             if (trans_val(position + 8 * colour, position) == 1 * colour && !pos_busy(positions, position + 8 * colour)) 
                 if(make_sure(positions, position, position + 8 * colour, king_position)) 
                 { 
-                    dprint("PAWN WORK FINE");
+                    //dprint("PAWN WORK FINE");
                     return False;  
                 }
-            dprint("Return true"); 
+            //dprint("Return true"); 
             return True;
             break;
         case 2:
@@ -467,7 +467,7 @@ char figure_is_blocked(signed char positions[64], unsigned char position, unsign
             array = king_points;
             break; // Avoid default exit, all parametrs for queen already applyed
         default:
-            dprint("NOT A FIGURE AT POSITION. EXIT");
+            //dprint("NOT A FIGURE AT POSITION. EXIT");
             return False;
             break;
     }
@@ -494,27 +494,27 @@ char figure_is_blocked(signed char positions[64], unsigned char position, unsign
 // If mate returns 1 (True), if stalemate, returns -1 if no mate returns 0 (False) 
 char mate_stalemate_check(signed char positions[64], unsigned char king_position, char king_type) // king_type True if king white
 {
-    dprint("CALL MATE AND STALEMATE CHECK");
-    dprintd("KING TYPE", king_type);
+    ////dprint("CALL MATE AND STALEMATE CHECK");
+    ////dprintd("KING TYPE", king_type);
     positions[king_position] = 0;
 
     if (king_is_blocked(positions, king_position, king_type))
     {
         char bite_array[16];
-        dprint("KING CAN'T MOVE");
+        ////dprint("KING CAN'T MOVE");
         
         if (is_pos_biten(positions, king_position, not(king_type), bite_array))
         {
             
-             dprintd("SECMV", bite_array[0]);
+             ////dprintd("SECMV", bite_array[0]);
             if (bite_array[0] > 1) // King can't move and some figure bite it. 
             { 
-                dprint("MATE!");
+                ////dprint("MATE!");
                 goto ret_true; // Mate mean
             }
             else
             {    
-                dprintd("Just one bite the king", bite_array[1]);  
+                ////dprintd("Just one bite the king", bite_array[1]);  
                 
                 /* Two stages of checking:
                     1) If we can kill figure, that's mated the king - not mate
@@ -535,7 +535,7 @@ char mate_stalemate_check(signed char positions[64], unsigned char king_position
                 case 1: case -1: goto ret_true; break;
                 case 2: case -2: goto ret_true; break; 
                 } 
-                dprint("//////FIRST OUT");
+                ////dprint("//////FIRST OUT");
                 char direction;
                 char s_pos; // suspected_position
                 char step;
@@ -549,8 +549,8 @@ char mate_stalemate_check(signed char positions[64], unsigned char king_position
                     direction = (bite_array[1] - king_position) / abs((bite_array[1] - king_position));
                     step = abs(bite_array[1] - king_position);
                 }
-                dprintd("//// DIRECTION", direction);
-                dprintd("//// STEP", step);
+                ////dprintd("//// DIRECTION", direction);
+                ////dprintd("//// STEP", step);
                 for (char i = 1; i < step; i++)
                 {
                     s_pos = direction * i + king_position;
@@ -559,8 +559,8 @@ char mate_stalemate_check(signed char positions[64], unsigned char king_position
                         
                         for(char x = 1; x <= ret[0]; x++)
                         {
-                            // dprintd("//// RET[x]", ret[x]);
-                            // dprintd("//// SUSP_POS", s_pos);
+                            // ////dprintd("//// RET[x]", ret[x]);
+                            // ////dprintd("//// SUSP_POS", s_pos);
                             if(make_sure(positions, ret[x], s_pos, king_position))
                                 goto ret_false;
                         }
@@ -581,7 +581,7 @@ char mate_stalemate_check(signed char positions[64], unsigned char king_position
                     /* figure_is_blocked also cheks check on king position */
                     if(!figure_is_blocked(positions, pos, king_position)) 
                     {
-                        dprint("/EXIT/");
+                        ////dprint("/EXIT/");
                         goto ret_false;
                     }
                 }
@@ -590,8 +590,8 @@ char mate_stalemate_check(signed char positions[64], unsigned char king_position
         }
     }
     ret_false:
-        dprintd("   King is", king_type);
-        dprint("RETURN FALSE FROM MATE_STALEMATE_CHEK");
+        ////dprintd("   King is", king_type);
+        ////dprint("RETURN FALSE FROM MATE_STALEMATE_CHEK");
         if (king_type)
             positions[king_position] = 6;
         else
@@ -599,8 +599,8 @@ char mate_stalemate_check(signed char positions[64], unsigned char king_position
         return False;
 
     ret_true:
-        dprintd("   King is", king_type);
-        dprint("RETURN TRUE FROM MATE_STALEMATE_CHECK");
+        ////dprintd("   King is", king_type);
+        ////dprint("RETURN TRUE FROM MATE_STALEMATE_CHECK");
         if (king_type)
             positions[king_position] = 6;
         else
@@ -640,10 +640,10 @@ char kings_check(signed char positions[64], signed char fig_type, char *status) 
         else
         {
             *status = *status | BLACK_ON_CHECK;
-            dprint("Status applyed");
+            ////dprint("Status applyed");
             if(mate_stalemate_check(positions, black_king_position, False) == 1)
                 {
-                    dprint(" Black mate!");
+                    ////dprint(" Black mate!");
                     *status = 0 | PARTY_END | IS_MATE; // Side is black  
                 }
         }
@@ -668,7 +668,7 @@ char kings_check(signed char positions[64], signed char fig_type, char *status) 
             *status = *status | WHITE_ON_CHECK;
             if(mate_stalemate_check(positions, white_king_position, True) == 1)
             {
-                dprint("WHITE MUST DIE");
+                ////dprint("WHITE MUST DIE");
                 *status = 0 | PARTY_END | IS_MATE | IS_SIDE_WHITE;
             }
         }
@@ -699,7 +699,7 @@ char kings_check(signed char positions[64], signed char fig_type, char *status) 
     }
     if(whites == 1 && blacks == 1)
     {
-        dprint("    PARTY END IN DRAW - NO FIGURES!");
+        ////dprint("    PARTY END IN DRAW - NO FIGURES!");
         // This mean only kings on field
         // Who makes last move applyed like 'lost' side
         if(fig_type > 0)
@@ -707,13 +707,12 @@ char kings_check(signed char positions[64], signed char fig_type, char *status) 
         else
             *status = 0x00 | PARTY_END | IS_SIDE_WHITE;
     } 
-
     return flag;
 }
 
 char apply_move(signed char positions[64], unsigned char pos, unsigned char new_position, char *status)
 {
-    dprint("///////CALL APPLY MOVE");
+    //dprint("///////CALL APPLY MOVE");
     signed char fig_type = positions[pos];
     signed char old = positions[new_position];
     positions[pos] = 0;
@@ -729,16 +728,16 @@ char apply_move(signed char positions[64], unsigned char pos, unsigned char new_
 
 char take_on_pass_check(char positions[64])
     {
-        dprint("----------------ENTER IN take_on_pass_check---------------");
+        //dprint("----------------ENTER IN take_on_pass_check---------------");
         if(!__GLOBAL_FLAG_is_last_move_data_correct)
         {
-            dprint("EXIT FROM take_on_pass");
+            //dprint("EXIT FROM take_on_pass");
             return False;
         }
-        dprint("CHECK PASS");
-        dprint("-----IF DATA-----");
-        dprintd("OLD_pos_fig", abs(positions[__GLOBAL_OLD_new_position]));
-        dprintd("TR_VAL", trans_val(__GLOBAL_OLD_new_position, __GLOBAL_OLD_position));
+        //dprint("CHECK PASS");
+        //dprint("-----IF DATA-----");
+        //dprintd("OLD_pos_fig", abs(positions[__GLOBAL_OLD_new_position]));
+        //dprintd("TR_VAL", trans_val(__GLOBAL_OLD_new_position, __GLOBAL_OLD_position));
         if(abs(positions[__GLOBAL_OLD_new_position]) == 1 && abs(trans_val(__GLOBAL_OLD_new_position, __GLOBAL_OLD_position)) == 2) 
         {
             return True;
@@ -748,7 +747,7 @@ char take_on_pass_check(char positions[64])
 
 
 // That function return True (1) if move applyed and modificate status, if that's necessary
-char c_move(signed char positions[64], unsigned char pos, unsigned char new_position, char *status)
+char c_move(signed char positions[64], unsigned char pos, unsigned char new_position, char *status, previos_move last_move)
 {
     if (*status < 0) // Party end
         return False;
@@ -779,20 +778,20 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
 
                 if (new_position == pos + 7 || new_position == pos + 9) 
                 {
-                    dprint("-----------------TAKE ON PASS CHECK ENTER-----------------");
-                    dprintd("ONP", __GLOBAL_OLD_new_position);
-                    dprintd("OP", __GLOBAL_OLD_position);
-                    dprintd("FLAG", __GLOBAL_FLAG_is_last_move_data_correct);
-                    dprint("------IF DATA-----");
-                    dprintd("pos[n_pos - 8]", positions[new_position - 8]);
-                    dprintd("take_on_pass_check", take_on_pass_check(positions));
+                    //dprint("-----------------TAKE ON PASS CHECK ENTER-----------------");
+                    //dprintd("ONP", __GLOBAL_OLD_new_position);
+                    //dprintd("OP", __GLOBAL_OLD_position);
+                    //dprintd("FLAG", __GLOBAL_FLAG_is_last_move_data_correct);
+                    //dprint("------IF DATA-----");
+                    //dprintd("pos[n_pos - 8]", positions[new_position - 8]);
+                    //dprintd("take_on_pass_check", take_on_pass_check(positions));
                     if (positions[new_position - 8] == -1 && take_on_pass_check(positions))
                     {
-                        dprint("ENTER");
+                        //dprint("ENTER");
                         positions[new_position - 8] = 0;
                         if (apply_move(positions, pos, new_position, status))
                         {
-                            dprint("------------------> ToP white returned");
+                            //dprint("------------------> ToP white returned");
                             return True | take_on_pass_white;
                         }
                     }
@@ -828,11 +827,11 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
                 {
                     if (positions[new_position + 8] == 1 && take_on_pass_check(positions))
                     {
-                        dprint("ENTER BLACK");
+                        //dprint("ENTER BLACK");
                         positions[new_position + 8] = 0;
                         if (apply_move(positions, pos, new_position, status))
                         {
-                            dprint("------------------> ToP black returned");
+                            //dprint("------------------> ToP black returned");
                             return True | take_on_pass_black;
                         }
                     }
@@ -1009,7 +1008,7 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
         case 5: // The Queen is a bishop and castle, so move called like a bishop and like a castle
             _old = positions[new_position];
             positions[pos] = 3;
-            if(c_move(positions, pos, new_position, status))
+            if(c_move(positions, pos, new_position, status, last_move))
             {
                 positions[pos] = 5;
                 positions[new_position] = _old;
@@ -1018,7 +1017,7 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
             else
             {
                 positions[pos] = 4;
-                if(c_move(positions, pos, new_position, status))
+                if(c_move(positions, pos, new_position, status, last_move))
                 {
                     positions[pos] = 5;
                     positions[new_position] = _old;
@@ -1035,7 +1034,7 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
         case -5:
             _old = positions[new_position];
             positions[pos] = -3;
-            if(c_move(positions, pos, new_position, status))
+            if(c_move(positions, pos, new_position, status, last_move))
             {
                 positions[pos] = -5;
                 positions[new_position] = _old;
@@ -1098,7 +1097,7 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
         case -6:
             if (new_position == 58 && !(*status & BLACK_CASTLING_LEFT_DENIED)) // Try castling white left we are know, the castle and king not moving yet
             {
-                dprint("CATLR");
+                //dprint("CATLR");
                 if(!(pos_busy(positions, 59) || pos_busy(positions, 58) || pos_busy(positions, 57) || *status & BLACK_ON_CHECK))
                 {
                     if (!(is_pos_biten(positions, 59, True, NULL) || is_pos_biten(positions, 58, True, NULL) || is_pos_biten(positions, 57, True, NULL) || is_pos_biten(positions, 56, True, NULL)))
@@ -1118,10 +1117,10 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
             {
                 if(!(pos_busy(positions, 61) || pos_busy(positions, 62) || *status & BLACK_ON_CHECK))
                 {
-                    dprint("ONE");
+                    //dprint("ONE");
                     if (!(is_pos_biten(positions, 61, True, NULL) || is_pos_biten(positions, 62, True, NULL) || is_pos_biten(positions, 63, True, NULL)))
                     {
-                        dprint("TWO");
+                        //dprint("TWO");
                         if (apply_move(positions, pos, new_position, status))
                         {
                            *status = *status | BLACK_CASTLING_LEFT_DENIED;
@@ -1160,4 +1159,19 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
             break;
     }
     return False;
+}
+
+
+// Like c_move, but do not modificate status and positions
+char try_move(signed char positions[64], unsigned char pos, unsigned char new_position, char status)
+{
+	char old = positions[new_position];
+	char ret = c_move(positions, pos, new_position, &status);		
+	if(ret)	
+	{
+		positions[pos] = positions[new_position];
+		positions[new_position] = old;
+	}
+	return ret;
+
 }

@@ -97,16 +97,6 @@ class desk:
         self.position_busy = [True if i == 0 else False for i in self.desk_positions]
         self._move_stack = []
         self._bite_stack = []
-        self.desk_positions[57], self.desk_positions[62] = -2, -2 # Knights
-        self.desk_positions[58], self.desk_positions[61] = -3, -3 # Bishops
-        self.desk_positions[59], self.desk_positions[60] = -5, -6 # Queen, king
-            
-        self.status = status([False for _ in range(8)])
-        self.next_move_is_white = True
-        #self.id = dict(zip(self.positions, [i for i in range(32)])) # Convert a position to id. Updatable when move
-        self.position_busy = [True if i == 0 else False for i in self.desk_positions]
-        self._move_stack = []
-        self._bite_stack = []
         self.take_on_pass_cnt = []
         self.__DEBUG = debug
         self.next_move_is_white = True
@@ -268,6 +258,16 @@ class pyDesk(desk):
 
     def move(self, position, new_position):
         if super().move(position, new_position):
+            self.is_figure_selected = False
+            return True
+        return False
+
+
+    def sprites_load(self): 
+        figures = [None] # None, white_pawn, white_knigth, white_bishop, white_castle, white_queen, white_king, black_king, black_queen, black_tower, black_bishop, black_knigth, black_pawn
+        fig_types = ["pawn", "knight", "bishop", "castle", "queen", "king"]
+        for figure in fig_types:
+                print("Loading {addr}white_{lit}.png".format(addr = self.addres,  lit = figure))
                 figures.append(self.pygame.image.load("{addr}white_{lit}.png".format(addr = self.addres, lit = figure)))
         for figure in fig_types[::-1]:
                 print("Loading {addr}black_{lit}.png".format(addr = self.addres,  lit = figure))
@@ -330,13 +330,15 @@ class pyDesk(desk):
 class test:
     def prob_space_test(self):
         dsk = desk()
+        print(dsk.desk_positions)
         print("Without error:")
-        ret = pychess.space_of_probs(dsk.desk_positions, 1)
+        ret = pychess.space_of_probs(dsk.desk_positions, 0, 1)
         print(ret)
 
 if __name__ == "__main__":
     print("It is a module.")
-    pychess.move()
-
+    tst = test()
+    for i in range(1):
+        tst.prob_space_test()
 
     

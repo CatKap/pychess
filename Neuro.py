@@ -2,20 +2,9 @@ import tensorflow as tf
 import numpy as np
 from PyChess import C_API as cp
 
-class agent:
-
-    def __init__(self, side, depth):
-        self.side = side
-        self.depth = depth
-        self.__Caddres = 0x0 # Contain a C structure addres, for optimization
-
-    
-    def cost_func(self, positions, who_move):
-        return network(positions)
-
 
 @tf.Module
-class network:
+class network(Module):
     pass
 
 def __call__(self, position):
@@ -27,4 +16,19 @@ def save(self, path):
 
 def load(self, path):
     pass
+
+class agent:
+
+    def __init__(self, side, depth, positions):
+        self.side = side
+        self.depth = depth
+        self.__Caddres = 0x0 # Contain a C structure addres, for optimization
+        self.network = network
+        self.positions = np.array(positions)
+
+    
+    def cost_func(self, positions, who_move):
+        return self.network(positions)
+
+
 

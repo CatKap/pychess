@@ -4,6 +4,7 @@
 list *list_create()
 {
    list *new = malloc(sizeof(list));
+   dprint("List creation pass!");
    new->lenth = 0;
    new->first = NULL; 
    return new;
@@ -20,14 +21,11 @@ void list_add(list *lst, bite_prob dt)
     new->number = lst->lenth;
     new->data.position = dt.position;
     new->data.posible_bite_position = dt.posible_bite_position;
-    new->data.probabilyty = dt.probabilyty;
     new->next = lst->first; 
 
     lst->first = new;
-    lst->lenth += 1;
-    dprintd("LENTH", lst->lenth);
+    lst->lenth += 1; dprintd("LENTH", lst->lenth);
 }
-
 
 struct node *list_get(list *lst, char index)
 {
@@ -41,6 +39,7 @@ struct node *list_get(list *lst, char index)
             return search;
         search = search->next;
     }
+	return NULL; // Just for sure
 }
 
 struct node *list_pop(list *lst, char index)
@@ -108,6 +107,68 @@ struct node *fast_pop(list *list)
     return NULL; // ERRNO SEE
 }
 
+// This function returns two-dimensional pointer-like array  of probable desks if sec_dim parametr is not zero, list of probable space of moves   
+// *sec_dim is a mutable variable thats answer about lenth of second dimention (first lenth is constant - 64) desks_array array
+// signed char* positions must be positions[64]
+// side === is_white_bite
+list* new_brute_check(signed char positions[64], char status, char side)
+{
+	list *ret_list = list_create();
+	bite_prob prob_move;
+	unsigned char bite_array[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};	
+	unsigned char bite_counter = 0;
+	for(char i = 0; i < 64; i++) // For all positions
+	{
+		bite_counter = is_pos_biten(positions, i, side, bite_array);
+		for(char x = 1; x <= bite_counter; x++)
+		{
+			if(try_move(positions, bite_array[x], i, status))
+			{
+				prob_move.position = bite_array[x];
+				prob_move.posible_bite_position = i;
+				list_add(ret_list, prob_move);
+			}
+		}
+	}
+	return ret_list;
+}
+
+char** build_desks_array(list *prob_list, signed char original_positinons[64])
+{
+	char** desks_array = (char**)malloc(sizeof(char*) * prob_list->lenth);
+	dprint(">>> Build of problist continue");
+	dprint("	Start building a array");
+	struct node *cnt_node = prob_list->first;
+	desks_array =(char**)malloc(sizeof(char) * prob_list->lenth);	
+	dprint("	First array init pass");
+	for(char i = 0; i < prob_list->lenth; i++)	
+	{
+		dprintd("	Sec arr num", i);
+		*(desks_array + i)= (char*)malloc(64);
+		dprint("	Init sec array with i num");
+		for(char j = 0; j < 64; j++)
+		{
+			(desks_array[i])[j] = original_positinons[j];
+			dprintd("	Pass this J", j);
+		}
+		dprint("	Pass J cycle");
+		dprintd("	cnt_node->data.posible_bite_position", cnt_node->data.posible_bite_position);
+		// Applying a position
+		(desks_array[i])[cnt_node->data.posible_bite_position] = (*(desks_array + i))[cnt_node->data.position];
+		(desks_array[i])[cnt_node->data.position] = 0;
+		cnt_node = cnt_node->next; // Because cycle use lenth of list like upper limit, cnt_node runs all the list nodes
+		dprintd("Pass i", i);
+	}
+	dprint("Exit ->build_desks_array<-");
+	return desks_array;
+}
+
+// Soft check using when old probable desk exsist, so just change it
+void soft_check(struct agent *agnt, char *sec_dim, char **desks_array)
+{
+
+}
+
 
 list* brute_check(char positions[64], char status, char colour)
 {
@@ -119,26 +180,17 @@ list* brute_check(char positions[64], char status, char colour)
         {
             for(char pos = 0; pos < 64; pos++)
             {
-                if(c_move(positions, i, pos, &status))
+                if(try_move(positions, i, pos, status))
                 {
                     next.position = i;
                     next.posible_bite_position = pos;
-                    next.probabilyty = 0; 
                     list_add(ret_list, next);
                 }
             }
         }
     }
-    struct node *nd = ret_list->first;
-    float prob = 1 / (float)(ret_list->lenth);
-    while(nd->next != NULL)
-    {
-        nd = nd->next;
-        nd->data.probabilyty = prob;
-    }
     return ret_list;
 }
-
 
 float fig_cost(char figure)
 {
@@ -164,15 +216,12 @@ float fig_cost(char figure)
 }
 
 
-char* positions_copy(char positions[64])
+void positions_copy(char positions[64], char new[64])
 {
-	char *new[64];
-
 	for (char i = 0; i < 64; i++)
 	{
-		*new[i] = positions[i];
+		new[i] = positions[i];
 	}
-	return *new;
 }
 
 
@@ -192,7 +241,7 @@ int ai_main(void)
     struct node *nd = space->first;
     while(nd->next != NULL)
     {
-        printf("%d -> %d, Prob: %f\n", nd->data.position, nd->data.posible_bite_position, nd->data.probabilyty);
+        printf("%d -> %d\n", nd->data.position, nd->data.posible_bite_position);
         nd = nd->next;
     }
     printf("Total is: %d", space->lenth);

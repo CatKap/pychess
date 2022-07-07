@@ -1,5 +1,28 @@
 #include "defines.h"
 
+// Test fuction
+void print_desk(char positions[64], unsigned char tested)
+{
+    for(char y = 7; y >= 0; y--)
+    {
+        for(char x = 0; x < 8; x++)
+        {
+            if (8 * y + x == tested && tested != 0)
+            {
+                printf(" n ");
+                continue;
+            }
+            if (positions[8 * y + x] >= 0)                
+                printf(" %d ", positions[8 * y + x]);
+            else
+                printf("-%d ", positions[8 * y + x] * -1);
+        }
+        printf("\n");
+    }
+}
+
+
+
 // Function require to implement take on pass in engine. Set to gloabal varaibles move information. Use to set last from python code
 PyObject *pychess_set_last_move(PyObject *self, PyObject *args)
 {
@@ -126,7 +149,7 @@ PyObject* pychess_is_position_bite(PyObject *self, PyObject *args)
     }
     else
     {
-        PyErr_SetString(PyExc_AttributeError, "last argument must be boolean");
+        PyErr_SetString(PyExc_AttributeError, "Last argument must be boolean");
         return NULL;
     }
     if(!(PyList_Size(py_positions) == 64))
@@ -152,12 +175,12 @@ PyObject* pychess_is_position_bite(PyObject *self, PyObject *args)
 }
 
 
-// Returns space of possible moves in array [ [position, new_position, probabylity], ..., ]
+// Returns space of possible moves in array [ [position, new_position], ..., ]
 PyObject *pychess_space_of_probs(PyObject *self, PyObject *args)
 {
     PyObject *pos_list;
-    long int figs_type;
-    if(PyArg_ParseTuple(args, "Ol", &pos_list, &figs_type))         
+    long int figs_type, status;
+    if(PyArg_ParseTuple(args, "Oll", &pos_list, &status, &figs_type))         
     {
         if(!PyList_Check(pos_list)) // pos_list must be list
         {
@@ -179,44 +202,47 @@ PyObject *pychess_space_of_probs(PyObject *self, PyObject *args)
 
         dprintd("fig_type", figs_type);
         dprint("Not error.");
-        list *ret_list = brute_check(positions, 0, figs_type);        
+		size_t lenth = 1;
+    	list *ret_list = new_brute_check(positions, (char)status, figs_type);
         dprint("So, this for sure. Exit."); 
         PyObject *py_ret_list = PyList_New((Py_ssize_t)ret_list->lenth);
 
+#ifdef _DEBUG
+		list *sec_list = brute_check(positions, (char)status, figs_type);
+        struct node *itr = sec_list->first;
+		printf("TEST: [");
+		while(itr != NULL)
+		{
+			printf("[%d, %d], ", itr->data.position, itr->data.posible_bite_position);
+			itr = itr->next;	
+		}
+		printf("]\n");
+#endif
+
         int counter = 0;
         struct node *iterable = ret_list->first;
-        while(iterable!= NULL)
+        while(iterable != NULL)
         {
-            PyObject *py_bite_probe = PyList_New(3);
-            #ifdef _DEBUG
-                if(iterable->data.position == 16) 
-                    {
-                        dprintd("counter", counter);
-                        dprintd("list_len", ret_list->lenth);
-                    }
-            #endif
+            PyObject *py_bite_probe = PyList_New(2);
             PyList_SET_ITEM(py_bite_probe, 0, PyLong_FromLong((long)iterable->data.position));
             PyList_SET_ITEM(py_bite_probe, 1, PyLong_FromLong((long)iterable->data.posible_bite_position));
-            PyList_SET_ITEM(py_bite_probe, 2, PyFloat_FromDouble((double)iterable->data.probabilyty));
             PyList_SET_ITEM(py_ret_list, counter, py_bite_probe);
             iterable = iterable->next;
             dprintd("CNT", counter);
             counter++;
         }
-
         return py_ret_list;
     }    
     else
     {
-        PyErr_SetString(PyExc_AttributeError, "Fuction must take iterable object and number like argument.");
+        PyErr_SetString(PyExc_AttributeError, "Fuction must take list of positions (64 elements), status and number (which define side of checking) like argument.");
         return NULL;
     }
 }
 
-
 // AI fuctions
 // Return a addres of agent in python int type
-PyObject *pychess_init_AI_agent(PyObject *self, PyObject *args)
+PyObject *pychess_init_agent(PyObject *self, PyObject *args)
 {
 	long int depth, side; 
 	PyObject *py_positions;
@@ -225,33 +251,35 @@ PyObject *pychess_init_AI_agent(PyObject *self, PyObject *args)
 		PyErr_SetString(PyExc_AttributeError, "Bad agrguments");
 		return NULL;
 	}
+	struct agent *ret_agent_addres = malloc(sizeof(struct agent));
+	if (translate_positions(py_positions, (char*)ret_agent_addres->positions) == NULL)
+			return NULL;
 
 	// Append depth and side of agent
-	struct agent *ret_agent_addres = malloc(sizeof(struct agent));
 	ret_agent_addres->depth = (unsigned char)depth;
-	ret_agent_addres->side = (char)side;
-
-    if (!PyList_Check(py_positions)) // py_positions must be a list of positions
-    {
-        PyErr_SetString(PyExc_AttributeError, "Positions is not a list!");
-        return NULL;
-    }
-
-    if (!(PyList_Size(py_positions) == 64)) // Positions must have lenth equal to 64 
-    {
-        PyErr_SetString(PyExc_IndexError, "Invalid lenth of positions array, must be 64");
-        return NULL;
-    }
-
-    for(char i = 0; i < 64; i++)
-    {
-        ret_agent_addres->positions[i] = (signed char)PyLong_AsLong(PyList_GetItem(py_positions, (Py_ssize_t)i));
-    }
-
+	ret_agent_addres->status = (char)side;
 	return PyLong_FromLong((long long)ret_agent_addres);
 }
 
+PyObject *pychess_delete_agent(PyObject *self, PyObject *args)
+{
+	long long addres;
+	if(!PyArg_ParseTuple(args, "l", &addres))
+	{
+		PyErr_SetString(PyExc_AttributeError, "Bad agrguments");
+		return NULL;
+	}
+	// Test code for agent here
+		
 
+	struct agent *d_agent = (void *)addres;
+	dprint("===You delete the agent===");
+	dprintd("WITH DEPTH", d_agent->depth);
+	dprintd("WITH STATUS", d_agent->status);
+	print_desk((char*)d_agent->positions, 0);
+	free(d_agent);
+	return Py_None;
+}
 
 // Python module required stack
 static PyMethodDef pychess_methods[] = {
@@ -259,6 +287,8 @@ static PyMethodDef pychess_methods[] = {
     {"is_position_bite", (PyCFunction)(void(*)(void))pychess_is_position_bite, METH_VARARGS, NULL},
     {"set_last_move", (PyCFunction)(void(*)(void))pychess_set_last_move, METH_VARARGS, NULL},
     {"space_of_probs", (PyCFunction)(void(*)(void))pychess_space_of_probs, METH_VARARGS, NULL},
+    {"init_agent", (PyCFunction)(void(*)(void))pychess_init_agent, METH_VARARGS, NULL},
+    {"delete_agent", (PyCFunction)(void(*)(void))pychess_delete_agent, METH_VARARGS, NULL},
     { NULL, NULL, 0, NULL}
 };
 
