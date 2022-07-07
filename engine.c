@@ -747,7 +747,7 @@ char take_on_pass_check(char positions[64])
 
 
 // That function return True (1) if move applyed and modificate status, if that's necessary
-char c_move(signed char positions[64], unsigned char pos, unsigned char new_position, char *status, previos_move last_move)
+char c_move(signed char positions[64], unsigned char pos, unsigned char new_position, char *status)
 {
     if (*status < 0) // Party end
         return False;
@@ -1008,7 +1008,7 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
         case 5: // The Queen is a bishop and castle, so move called like a bishop and like a castle
             _old = positions[new_position];
             positions[pos] = 3;
-            if(c_move(positions, pos, new_position, status, last_move))
+            if(c_move(positions, pos, new_position, status))
             {
                 positions[pos] = 5;
                 positions[new_position] = _old;
@@ -1017,7 +1017,7 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
             else
             {
                 positions[pos] = 4;
-                if(c_move(positions, pos, new_position, status, last_move))
+                if(c_move(positions, pos, new_position, status))
                 {
                     positions[pos] = 5;
                     positions[new_position] = _old;
@@ -1034,7 +1034,7 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
         case -5:
             _old = positions[new_position];
             positions[pos] = -3;
-            if(c_move(positions, pos, new_position, status, last_move))
+            if(c_move(positions, pos, new_position, status))
             {
                 positions[pos] = -5;
                 positions[new_position] = _old;
