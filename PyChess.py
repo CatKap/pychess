@@ -104,7 +104,7 @@ class desk:
             self.desk_positions = desk
         
         if self.__DEBUG:
-            self.take_on_pass_colour_set = lambda new_position: not bool(self.desk_positions[new_position]/abs(self.desk_positions[new_position]))
+            self.take_on_pass_colour_set = lambda new_position: self.desk_positions[new_position] > 0
         else:
             self.take_on_pass_colour_set = lambda null: self.next_move_is_white
         
@@ -117,7 +117,6 @@ class desk:
 
     # Pushed a move into a move stack. Supposed, that move already done, self.desk_position modified, so require a _old num, which directed to old figure at
     def _push(self, position, new_position, _old): 
-        pychess.set_last_move(position, new_position, 1)
         self._bite_stack.append(_old)
         self._move_stack.append((position, new_position, self.status.get_int_status()))
         i = 0
@@ -127,7 +126,7 @@ class desk:
 
     # Delete a move from move stack, change position to a previos position self.desk_positions
     def pop(self):
-        print(self.take_on_pass_cnt)
+        print("Take on pass cnt", self.take_on_pass_cnt)
         if len(self.take_on_pass_cnt) > 0:
             ToP_case = self.take_on_pass_cnt[-1]
             if ToP_case[0] == 1: # Means now we need to return this move
@@ -137,18 +136,15 @@ class desk:
                 else:
                     self.desk_positions[ToP_case[1]] = 1
                 self.take_on_pass_cnt.pop()
-
         i = 0 
         while i < len(self.take_on_pass_cnt):         
             self.take_on_pass_cnt[i][0] -= 1 
             i += 1 
-            
         position, new_position, int_status = self._move_stack.pop()
         self.desk_positions[position] = self.desk_positions[new_position]
         self.desk_positions[new_position] = self._bite_stack.pop()
         self.status = status(int_status)
-        print("Set pos", self._move_stack[-1][0], "npos", new_position)
-        pychess.set_last_move(self._move_stack[-1][0], self._move_stack[-1][1], 1)
+        print("Set pos", position, "npos", new_position)
         self.next_move_is_white = not self.next_move_is_white
         return position, new_position, int_status
         
@@ -156,10 +152,14 @@ class desk:
     def move(self, position, new_position):
         _old = self.desk_positions[new_position]
         if self.__DEBUG or self.fig_colour(position) == self.next_move_is_white:
-            ret = pychess.move(self.desk_positions, position, new_position, self.status.get_int_status())
+            if len(self.move_stack) == 0:
+                ret = pychess.move(self.desk_positions, position, new_position, self.status.get_int_status(), [0, 0, 0])
+            else:
+                lst_move = list(self.move_stack[-1][:2])
+                lst_move.append(self._bite_stack[-1])
+                ret = pychess.move(self.desk_positions, position, new_position, self.status.get_int_status(), lst_move)
         else:
             return False
-
         self.desk_positions = ret[0]
         self.status = status(ret[1])
         if not self.status.IS_PARTY_END:

@@ -1,12 +1,9 @@
 #include "defines.h"
-char king_points[8] = {-9, -8, -7, -1, 1, 7, 8, 9};
-char knight_points[8] = {-17, -15, -10, -6, 6, 10, 15, 17};
-char queen_steps[8] = {-9, -7, 7, 9, -8, -1, 1, 8};
-char* bishop_steps = queen_steps; // Bishop steps is just first four steps of queen
-char* tower_steps = queen_steps + 4;
-char __GLOBAL_OLD_position = -1;
-char __GLOBAL_OLD_new_position = -1;
-char __GLOBAL_FLAG_is_last_move_data_correct = False;
+const char king_points[8] = {-9, -8, -7, -1, 1, 7, 8, 9};
+const char knight_points[8] = {-17, -15, -10, -6, 6, 10, 15, 17};
+const char queen_steps[8] = {-9, -7, 7, 9, -8, -1, 1, 8};
+const char* bishop_steps = queen_steps; // Bishop steps is just first four steps of queen
+const char* tower_steps = queen_steps + 4;
 
 char is_pos_exsist(unsigned char pos)
 {
@@ -14,7 +11,6 @@ char is_pos_exsist(unsigned char pos)
         return False;
     return True;
 }
-
 
 char is_figures_have_same_colour(char fig_1, char fig_2)
 {
@@ -393,7 +389,7 @@ char figure_is_blocked(signed char positions[64], unsigned char position, unsign
     //dprintd("AT POSITION", position);
     //dprintd("KING ON POSITION", king_position);
     char lenth = 8;
-    char *array = queen_steps;
+    char *array = (char*)queen_steps;
     char colour;
     char possible_moves[] = {0};
     char king_type;
@@ -464,7 +460,7 @@ char figure_is_blocked(signed char positions[64], unsigned char position, unsign
            break; 
 
         case 5: case -5:
-            array = king_points;
+            array = (char*)king_points;
             break; // Avoid default exit, all parametrs for queen already applyed
         default:
             //dprint("NOT A FIGURE AT POSITION. EXIT");
@@ -726,28 +722,16 @@ char apply_move(signed char positions[64], unsigned char pos, unsigned char new_
     return flag;
 }
 
-char take_on_pass_check(char positions[64])
+char take_on_pass_check(char positions[64], previos_move last_move)
     {
-        //dprint("----------------ENTER IN take_on_pass_check---------------");
-        if(!__GLOBAL_FLAG_is_last_move_data_correct)
-        {
-            //dprint("EXIT FROM take_on_pass");
-            return False;
-        }
-        //dprint("CHECK PASS");
-        //dprint("-----IF DATA-----");
-        //dprintd("OLD_pos_fig", abs(positions[__GLOBAL_OLD_new_position]));
-        //dprintd("TR_VAL", trans_val(__GLOBAL_OLD_new_position, __GLOBAL_OLD_position));
-        if(abs(positions[__GLOBAL_OLD_new_position]) == 1 && abs(trans_val(__GLOBAL_OLD_new_position, __GLOBAL_OLD_position)) == 2) 
-        {
+        if(abs(positions[last_move.new_position]) == 1 && abs(trans_val(last_move.new_position, last_move.old_position)) == 2) 
             return True;
-        }
         return False;
     }
 
 
 // That function return True (1) if move applyed and modificate status, if that's necessary
-char c_move(signed char positions[64], unsigned char pos, unsigned char new_position, char *status)
+char c_move(signed char positions[64], unsigned char pos, unsigned char new_position, char *status, previos_move last_move)
 {
     if (*status < 0) // Party end
         return False;
@@ -779,13 +763,10 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
                 if (new_position == pos + 7 || new_position == pos + 9) 
                 {
                     //dprint("-----------------TAKE ON PASS CHECK ENTER-----------------");
-                    //dprintd("ONP", __GLOBAL_OLD_new_position);
-                    //dprintd("OP", __GLOBAL_OLD_position);
-                    //dprintd("FLAG", __GLOBAL_FLAG_is_last_move_data_correct);
                     //dprint("------IF DATA-----");
                     //dprintd("pos[n_pos - 8]", positions[new_position - 8]);
                     //dprintd("take_on_pass_check", take_on_pass_check(positions));
-                    if (positions[new_position - 8] == -1 && take_on_pass_check(positions))
+                    if (positions[new_position - 8] == -1 && take_on_pass_check(positions, last_move))
                     {
                         //dprint("ENTER");
                         positions[new_position - 8] = 0;
@@ -825,7 +806,7 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
 
                 if (new_position == pos - 7 || new_position == pos - 9) 
                 {
-                    if (positions[new_position + 8] == 1 && take_on_pass_check(positions))
+                    if (positions[new_position + 8] == 1 && take_on_pass_check(positions, last_move))
                     {
                         //dprint("ENTER BLACK");
                         positions[new_position + 8] = 0;
@@ -1008,7 +989,7 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
         case 5: // The Queen is a bishop and castle, so move called like a bishop and like a castle
             _old = positions[new_position];
             positions[pos] = 3;
-            if(c_move(positions, pos, new_position, status))
+            if(c_move(positions, pos, new_position, status, last_move))
             {
                 positions[pos] = 5;
                 positions[new_position] = _old;
@@ -1017,7 +998,7 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
             else
             {
                 positions[pos] = 4;
-                if(c_move(positions, pos, new_position, status))
+                if(c_move(positions, pos, new_position, status, last_move))
                 {
                     positions[pos] = 5;
                     positions[new_position] = _old;
@@ -1034,7 +1015,7 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
         case -5:
             _old = positions[new_position];
             positions[pos] = -3;
-            if(c_move(positions, pos, new_position, status))
+            if(c_move(positions, pos, new_position, status, last_move))
             {
                 positions[pos] = -5;
                 positions[new_position] = _old;
@@ -1043,7 +1024,7 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
             else
             {
                 positions[pos] = -4;
-                if(c_move(positions, pos, new_position, status))
+                if(c_move(positions, pos, new_position, status, last_move))
                 {
                     positions[pos] = -5;
                     positions[new_position] = _old;
@@ -1161,17 +1142,15 @@ char c_move(signed char positions[64], unsigned char pos, unsigned char new_posi
     return False;
 }
 
-
 // Like c_move, but do not modificate status and positions
-char try_move(signed char positions[64], unsigned char pos, unsigned char new_position, char status)
+char try_move(signed char positions[64], unsigned char pos, unsigned char new_position, char status, previos_move last_move)
 {
 	char old = positions[new_position];
-	char ret = c_move(positions, pos, new_position, &status);		
+	char ret = c_move(positions, pos, new_position, &status, last_move);		
 	if(ret)	
 	{
 		positions[pos] = positions[new_position];
 		positions[new_position] = old;
 	}
 	return ret;
-
 }

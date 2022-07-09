@@ -43,6 +43,7 @@ class Game:
         h = self.display.get_height()
         while is_run:
             self.pyDesk.visualize()
+            clk.tick(25)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     is_run = False

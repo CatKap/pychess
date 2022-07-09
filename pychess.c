@@ -21,25 +21,7 @@ void print_desk(char positions[64], unsigned char tested)
     }
 }
 
-
-
-// Function require to implement take on pass in engine. Set to gloabal varaibles move information. Use to set last from python code
-PyObject *pychess_set_last_move(PyObject *self, PyObject *args)
-{
-    long int pos, new_pos, flag;
-    if(!PyArg_ParseTuple(args, "lll", &pos, &new_pos, &flag))
-    {
-        PyErr_Print();
-        PyErr_SetString(PyExc_AttributeError, "Invalid args for function call.");
-        return Py_None;
-    }
-    __GLOBAL_OLD_new_position = (char)new_pos;
-    __GLOBAL_OLD_position = (char)pos;
-    __GLOBAL_FLAG_is_last_move_data_correct = (char)flag;
-    return Py_None;
-}
-
-void *translate_positions(PyObject *py_positions, char positions[64])
+void* translate_positions(PyObject *py_positions, char positions[64])
 {
     if (!PyList_Check(py_positions)) // py_positions must be a list of positions
     {
@@ -60,22 +42,74 @@ void *translate_positions(PyObject *py_positions, char positions[64])
 	return (void*)1;
 }
 
+// This functions set python exception if figure or position is not accurate (position must be in range[0, 63], figure [-6, 6])
+void* py_check_position(unsigned char position)
+{
+	if (position > 63)
+	{
+		PyErr_SetString(PyExc_TypeError, "Position must be in range [0 - 63]");
+		return NULL;
+	}
+	return (void*) True;
+}
+
+void* py_check_figure(signed char figure)
+{
+	if(figure < -6 || figure > 6)
+	{
+		PyErr_SetString(PyExc_TypeError, "Figure must be in range [(-6) - 6]");
+		return NULL;
+	}
+	return (void*) True;	
+}
+
+void* last_move_setup(PyObject *py_list_last_move, previos_move *last_move)
+{
+	
+	if(PyList_Check(py_list_last_move))
+	{
+		if((size_t)PyList_Size(py_list_last_move) != 3)
+		{
+			PyErr_SetString(PyExc_AttributeError, "Invalid lenth of last move, must be three");
+			return NULL;	
+		}
+		last_move->old_position = (unsigned char)PyLong_AsLong(PyList_GET_ITEM(py_list_last_move, 0));
+		last_move->new_position = (unsigned char)PyLong_AsLong(PyList_GET_ITEM(py_list_last_move, 1));
+		last_move->new_position_figure = (unsigned char)PyLong_AsLong(PyList_GET_ITEM(py_list_last_move, 2));
+		if(!(py_check_position(last_move->old_position) || py_check_position(last_move->new_position)))
+			return NULL;
+		if(!(py_check_figure(last_move->new_position_figure)))
+			return NULL;
+	}
+	else
+		printf("Warnig: take on pass not be working because last move parametr not set!\n");	
+	return (void*)1;
+}
+
+
 PyObject *pychess_move(PyObject *self, PyObject *args) // Function take a positions array, position (array index), new position and status
 {
     long int position, new_position, l_status;
     signed char positions[64];
-    PyObject *py_positions;
-    if (!PyArg_ParseTuple(args, "Olll", &py_positions, &position, &new_position, &l_status))
+    PyObject *py_positions, *py_list_last_move;
+	previos_move last_move = {0, 0, -100}; // It's says that last move not set
+    if (!PyArg_ParseTuple(args, "OlllO", &py_positions, &position, &new_position, &l_status, &py_list_last_move))
     {
         PyErr_SetString(PyExc_AttributeError, "Invalid args for function call.");
         return NULL;
     }
 
+	if(!(py_check_position((unsigned char)position) || py_check_position((unsigned char)new_position)))
+		return NULL;
+	
+	if(!(last_move_setup(py_list_last_move, &last_move)))
+		return NULL;
+
 	if(translate_positions(py_positions, positions) == NULL)
 		return NULL;
 
     char status = (char)l_status;
-    char move_flag = c_move(positions, position, new_position, &status);
+    char move_flag = c_move(positions, position, new_position, &status, last_move);
 
     if(!(status & PARTY_END))
     {
@@ -135,6 +169,9 @@ PyObject* pychess_is_position_bite(PyObject *self, PyObject *args)
         PyErr_SetString(PyExc_AttributeError, "Bad agruments for function call");
         return NULL;
     }
+
+	if(!py_check_position((unsigned int)suspect_position))
+		return NULL;
     
     if (PyBool_Check(py_is_white_bite))
     {
@@ -178,9 +215,10 @@ PyObject* pychess_is_position_bite(PyObject *self, PyObject *args)
 // Returns space of possible moves in array [ [position, new_position], ..., ]
 PyObject *pychess_space_of_probs(PyObject *self, PyObject *args)
 {
-    PyObject *pos_list;
+    PyObject *pos_list, *py_list_last_move;
     long int figs_type, status;
-    if(PyArg_ParseTuple(args, "Oll", &pos_list, &status, &figs_type))         
+	previos_move last_move;
+    if(PyArg_ParseTuple(args, "OllO", &pos_list, &status, &figs_type, &py_list_last_move))         
     {
         if(!PyList_Check(pos_list)) // pos_list must be list
         {
@@ -194,6 +232,9 @@ PyObject *pychess_space_of_probs(PyObject *self, PyObject *args)
             return Py_None;
         }
 
+		if(!last_move_setup(py_list_last_move, &last_move))
+			return NULL;
+
         char positions[64]; 
         for(char i = 0; i < 64; i++)
         {
@@ -203,12 +244,12 @@ PyObject *pychess_space_of_probs(PyObject *self, PyObject *args)
         dprintd("fig_type", figs_type);
         dprint("Not error.");
 		size_t lenth = 1;
-    	list *ret_list = new_brute_check(positions, (char)status, figs_type);
+    	list *ret_list = new_brute_check(positions, (char)status, figs_type, last_move);
         dprint("So, this for sure. Exit."); 
         PyObject *py_ret_list = PyList_New((Py_ssize_t)ret_list->lenth);
 
 #ifdef _DEBUG
-		list *sec_list = brute_check(positions, (char)status, figs_type);
+		list *sec_list = brute_check(positions, (char)status, figs_type, last_move);
         struct node *itr = sec_list->first;
 		printf("TEST: [");
 		while(itr != NULL)
@@ -285,7 +326,6 @@ PyObject *pychess_delete_agent(PyObject *self, PyObject *args)
 static PyMethodDef pychess_methods[] = {
     {"move", (PyCFunction)(void(*)(void))pychess_move, METH_VARARGS, NULL},
     {"is_position_bite", (PyCFunction)(void(*)(void))pychess_is_position_bite, METH_VARARGS, NULL},
-    {"set_last_move", (PyCFunction)(void(*)(void))pychess_set_last_move, METH_VARARGS, NULL},
     {"space_of_probs", (PyCFunction)(void(*)(void))pychess_space_of_probs, METH_VARARGS, NULL},
     {"init_agent", (PyCFunction)(void(*)(void))pychess_init_agent, METH_VARARGS, NULL},
     {"delete_agent", (PyCFunction)(void(*)(void))pychess_delete_agent, METH_VARARGS, NULL},
@@ -295,7 +335,7 @@ static PyMethodDef pychess_methods[] = {
 static PyModuleDef pychess_module = {
     PyModuleDef_HEAD_INIT,
     "pychess",
-    "Module for faster execution of some chess algorytms.",
+    "Module contains chess engine logic compabilytel with python",
     0,
     pychess_methods
 };

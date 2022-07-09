@@ -47,13 +47,9 @@
 #define AGENT_BLACK_SIDE 0x00
 #define AGENT_JUST_INITILIZE 0x02 // Requre because first space of probable moves find out by brute force (64 * 64 moves try)
 
-extern char knight_points[];
-extern char* bishop_steps; // This is array, does not fool yourself
+const extern char knight_points[8];
+const extern char* bishop_steps; // This is array, does not fool yourself
 
-// Global variables contain informainiton about previos move - needable for take on pass
-extern char __GLOBAL_OLD_position;
-extern char __GLOBAL_OLD_new_position;
-extern char __GLOBAL_FLAG_is_last_move_data_correct;
 
 // Structures of list, Ai functions
 
@@ -100,19 +96,19 @@ typedef struct // Require for take on pass check
 } previos_move;
 
 struct node *list_pop(list *lst, char index);
-list *brute_check(char positions[64], char status, char colour);
 struct node *list_pop(list *lst, char index);
 struct node *fast_pop(list *list);
 
 // Functions, using in pychess module
-char c_move(signed char positions[64], unsigned char pos, unsigned char new_position, char *status);
-char try_move(signed char positions[64], unsigned char pos, unsigned char new_position, char status);
+char c_move(signed char positions[64], unsigned char pos, unsigned char new_position, char *status, previos_move last_move);
+char try_move(signed char positions[64], unsigned char pos, unsigned char new_position, char status, previos_move last_move);
 int is_pos_biten(signed char positions[64], char pos, char is_white_bite, char* array);
 char is_one_step_transfer_applyed(unsigned char pos1, unsigned char pos2, char figure);
 char figure_is_blocked(signed char positions[64], unsigned char position, unsigned char king_position);
-list* new_brute_check(signed char positions[64], char status, char side);
+list* new_brute_check(signed char positions[64], char status, char side, previos_move last_move);
 char** build_desks_array(list *prob_list, signed char original_positinons[64]);
 list *list_create();
+list* brute_check(char positions[64], char status, char colour, previos_move last_move);
 
 
 

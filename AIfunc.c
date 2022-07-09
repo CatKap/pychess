@@ -111,7 +111,7 @@ struct node *fast_pop(list *list)
 // *sec_dim is a mutable variable thats answer about lenth of second dimention (first lenth is constant - 64) desks_array array
 // signed char* positions must be positions[64]
 // side === is_white_bite
-list* new_brute_check(signed char positions[64], char status, char side)
+list* new_brute_check(signed char positions[64], char status, char side, previos_move last_move)
 {
 	list *ret_list = list_create();
 	bite_prob prob_move;
@@ -122,7 +122,7 @@ list* new_brute_check(signed char positions[64], char status, char side)
 		bite_counter = is_pos_biten(positions, i, side, bite_array);
 		for(char x = 1; x <= bite_counter; x++)
 		{
-			if(try_move(positions, bite_array[x], i, status))
+			if(try_move(positions, bite_array[x], i, status, last_move))
 			{
 				prob_move.position = bite_array[x];
 				prob_move.posible_bite_position = i;
@@ -170,7 +170,7 @@ void soft_check(struct agent *agnt, char *sec_dim, char **desks_array)
 }
 
 
-list* brute_check(char positions[64], char status, char colour)
+list* brute_check(char positions[64], char status, char colour, previos_move last_move)
 {
     list *ret_list = list_create();
     bite_prob next;
@@ -180,7 +180,7 @@ list* brute_check(char positions[64], char status, char colour)
         {
             for(char pos = 0; pos < 64; pos++)
             {
-                if(try_move(positions, i, pos, status))
+                if(try_move(positions, i, pos, status, last_move))
                 {
                     next.position = i;
                     next.posible_bite_position = pos;
@@ -237,7 +237,8 @@ int ai_main(void)
     0, 0, 0, 0, 0, 0, 0, 0, 
    -1,-1,-1,-1,-1,-1,-1,-1, 
    -4,-2,-3,-5,-6,-3,-2,-4};
-    list *space = brute_check(positions, 0, True); // First desk init 
+	previos_move lst_m = {0, 0, -100};
+    list *space = brute_check(positions, 0, True, lst_m); // First desk init 
     struct node *nd = space->first;
     while(nd->next != NULL)
     {
