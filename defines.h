@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <Python.h>
+#include <ndarrayobject.h>
 #define _DEBUG
 #ifdef _DEBUG
     #define dprint(str_val)  printf("%s\n", str_val) 

@@ -1,36 +1,83 @@
 #!/usr/bin/env python3.10
 import pygame 
+from simpleui import *
 from PyChess import pyDesk 
-from gameapi import smenu
+from sys import exit 
+from os.path import abspath
 
 class Game:
     def __init__(self, w, h, b_x, b_y, board_addres = None, debug = False):
         pygame.init()
+        self.is_run = True
+        self.w = w
+        self.h = h
+        self.path = abspath("./")
+        print("Set gamepath to ", self.path)
+        self.localization = {
+                "start" : "Start",
+                "quit" : "Quit",
+                "settings" : "Settings"
+                }
+
         self.__DEBUG = debug
         self.display = pygame.display.set_mode((w, h))
-        self.pyDesk = pyDesk(pygame = pygame, addres = "/home/kapitan/Progects/Chess/materials/png/", display = self.display, board_pos = (b_x, b_y), debug = self.__DEBUG)
+        self.gui = root(self.display)
+        self.pyDesk = pyDesk(pygame = pygame, addres = f"{self.path}/materials/png/", display = self.display, board_pos = (b_x, b_y), debug = self.__DEBUG)
         if board_addres:
             self.pyDesk.load(board_addres)
-        
-    def run():
-        pass
+            
 
-    
-    def menudebug(self):
-        print("menu test")
-        menu = smenu({"test1" : 1, "test2" : 2, "test3" : 3}, (100, 100), "/home/kapitan/Progects/Chess/materials/menu/", pygame.font.SysFont("silom.ttf", 50), self.display)
+    def run(self):
+        start_scene, settigns_scene = self.gui.new_scene() 
+        font = pygame.font.Font(f"{self.path}/materials/fonts/static/Montserrat-Medium.ttf", 40)
+        chk_font = pygame.font.Font(f"{self.path}/materials/fonts/checkfont.otf", 19)
+
+        menu_bnts = buttonConf(
+                font = font,
+                position = ((self.w - 200)/2, 100),
+                bg_colour = (14, 59, 67), #(0, 0, 0),
+                text_colour = (255, 255, 255),
+                size = (200, 50),
+                scale = 1.0
+                )
 
         clk = pygame.time.Clock()
-        is_run = True
-        h = self.display.get_height()
-        self.display.fill((255, 255, 255))
-        while is_run:
+        resaddres = "/home/kapitan/Progects/Chess/materials/menu/"
+        menu = {
+                self.localization["start"] : self.debug,
+                self.localization["settings"] : settigns_scene,
+                self.localization["quit"] :  exit,
+                }
+        
+        start_scene()
+        smn = game_menu(menu, menu_bnts, gap = 10)
+        settigns_scene() 
+        assert self.gui.scene is settigns_scene
+        test_chk = checkbox((100, 100), "✓", chk_font, size = (20, 22)) 
+        test_chk2 = checkbox((100, 150), "✓", chk_font, size = (20, 22)) 
+        test_chk3 = checkbox((100, 200), "✓", chk_font, size = (20, 22)) 
+        test_chk3 = checkbox((100, 1000), "✓", chk_font, size = (20, 22)) 
+        self.test_text = text_field((100, 300),  100, "input here")
+        scr = scroll_box(alwase_visible = True)
+
+        start_scene()
+        while self.is_run:
+            events = pygame.event.get()
             clk.tick(25)
-            menu.visualize()
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    is_run = False
+            self.display.fill((255, 255, 255))
+            self.gui.update()
+            self.global_events(events)
             pygame.display.flip()
+
+    def global_events(self, events):
+        for event in events:
+            if event.type == pygame.QUIT:
+                self.is_run = False
+
+    def test(self):
+        print(self.test_text.input)
+        self.test_text.input_clear()
+        self.test_text.err_state = True
 
     def debug(self):
         bite_im = pygame.image.load(self.pyDesk.addres + "bite_rect.png")
@@ -41,6 +88,7 @@ class Game:
         save_flag = False
         fnt = pygame.font.SysFont("silom.ttf", 24)
         h = self.display.get_height()
+
         while is_run:
             self.pyDesk.visualize()
             clk.tick(25)
@@ -89,12 +137,15 @@ class Game:
                 self.pyDesk.select_figure(x, y)            
             
             for pos in range(64):
-                if self.pyDesk.is_position_bite(pos, True)[0]:
-                    x, y = self.pyDesk.screen_positions[pos]
-                    r = bite_im.get_rect()
-                    r.x = x
-                    r.y = h - y - 75
-                    self.display.blit(bite_im, r)
+                if self.pyDesk.desk_positions[pos] <= 0:
+                    if self.pyDesk.is_figure_selected:
+                        bitearr = self.pyDesk.is_position_bite(pos, True)
+                        if  bitearr[0] and self.pyDesk.selected_figure[0] in bitearr[1:]:
+                            x, y = self.pyDesk.screen_positions[pos]
+                            r = bite_im.get_rect()
+                            r.x = x
+                            r.y = h - y - 75
+                            self.display.blit(bite_im, r)
             if save_flag:
                 self.pyDesk.save("/home/kapitan/Progects/Chess/Saves/last_save.chsv")
                 save_flag = False
@@ -102,6 +153,6 @@ class Game:
         pygame.quit()
 
 if __name__ == "__main__":
-    game = Game(600, 600, 0, 600, board_addres="/home/kapitan/Progects/Chess/Saves/last_save.chsv", debug = True)  
+    game = Game(1000, 800, 0, 800, board_addres="/home/kapitan/Progects/Chess/Saves/last_save.chsv", debug = True)  
     print(game.pyDesk.is_position_bite(55))
-    game.debug()
+    game.run()

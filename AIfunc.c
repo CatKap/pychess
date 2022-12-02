@@ -9,7 +9,9 @@ list *list_create()
    new->first = NULL; 
    return new;
 }
-	
+
+
+
 void list_add(list *lst, bite_prob dt)
 {
     #ifdef _DEBUG

@@ -1,4 +1,5 @@
 from importlib import __import__
+import numpy as np
 
 import pygame
 pychess = __import__("pychess")
@@ -25,6 +26,7 @@ class status:
             self.IS_SIDE_WHITE = self._status[1]
             self.IS_MATE = self._status[2]
     
+
     def get_int_status(self): # Tested, all fine 
         ret_int = 0
         if not self.IS_PARTY_END:
@@ -126,6 +128,8 @@ class desk:
 
     # Delete a move from move stack, change position to a previos position self.desk_positions
     def pop(self):
+        if len(self._move_stack) == 0:
+            return None
         print("Take on pass cnt", self.take_on_pass_cnt)
         if len(self.take_on_pass_cnt) > 0:
             ToP_case = self.take_on_pass_cnt[-1]
@@ -335,10 +339,11 @@ class test:
         ret = pychess.space_of_probs(dsk.desk_positions, 0, 1)
         print(ret)
 
+
 if __name__ == "__main__":
     print("It is a module.")
-    tst = test()
-    for i in range(1):
-        tst.prob_space_test()
+    arr = [0] * 64
+    pychess.np_test(np.array(arr, dtype = np.uint8))
+
 
     

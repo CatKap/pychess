@@ -1,5 +1,4 @@
 #include "defines.h"
-
 // Test fuction
 void print_desk(char positions[64], unsigned char tested)
 {
@@ -20,6 +19,8 @@ void print_desk(char positions[64], unsigned char tested)
         printf("\n");
     }
 }
+
+
 
 void* translate_positions(PyObject *py_positions, char positions[64])
 {
@@ -134,6 +135,7 @@ PyObject *pychess_move(PyObject *self, PyObject *args) // Function take a positi
     else
         size = 2;
     
+
     PyObject *ret_list = PyList_New(size);
     // Next two if-s set the position of taked pawn when take on pass happend
     // About take on pass alert the third element of array
@@ -302,6 +304,26 @@ PyObject *pychess_init_agent(PyObject *self, PyObject *args)
 	return PyLong_FromLong((long long)ret_agent_addres);
 }
 
+PyObject *pychess_np_test(PyObject *self, PyObject *args) 
+{
+	PyArrayObject *py_arrobj;
+	if(PyArg_ParseTuple(args, "O", &py_arrobj))
+	{
+		if(PyArray_Check(py_arrobj))
+		{
+			char *data = PyArray_BYTES(py_arrobj);	
+			for(char i = 0; i < 64; i++)	
+				printf("%d\n", data[i]);	
+		}
+		else
+			printf("Not array\n");
+			
+	}
+	else
+		return NULL;
+	return Py_None;
+}
+
 PyObject *pychess_delete_agent(PyObject *self, PyObject *args)
 {
 	long long addres;
@@ -324,11 +346,12 @@ PyObject *pychess_delete_agent(PyObject *self, PyObject *args)
 
 // Python module required stack
 static PyMethodDef pychess_methods[] = {
-    {"move", (PyCFunction)(void(*)(void))pychess_move, METH_VARARGS, NULL},
-    {"is_position_bite", (PyCFunction)(void(*)(void))pychess_is_position_bite, METH_VARARGS, NULL},
-    {"space_of_probs", (PyCFunction)(void(*)(void))pychess_space_of_probs, METH_VARARGS, NULL},
-    {"init_agent", (PyCFunction)(void(*)(void))pychess_init_agent, METH_VARARGS, NULL},
-    {"delete_agent", (PyCFunction)(void(*)(void))pychess_delete_agent, METH_VARARGS, NULL},
+    {"move", (PyCFunction)(void*)pychess_move, METH_VARARGS, NULL},
+    {"is_position_bite", (PyCFunction)(void*)pychess_is_position_bite, METH_VARARGS, NULL},
+    {"space_of_probs", (PyCFunction)(void*)pychess_space_of_probs, METH_VARARGS, NULL},
+    {"init_agent", (PyCFunction)(void*)pychess_init_agent, METH_VARARGS, NULL},
+    {"delete_agent", (PyCFunction)(void*)pychess_delete_agent, METH_VARARGS, NULL},
+    {"np_test", (PyCFunction)(void*)pychess_delete_agent, METH_VARARGS, NULL},
     { NULL, NULL, 0, NULL}
 };
 
