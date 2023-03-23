@@ -32,7 +32,7 @@ class Game:
         font = pygame.font.Font(f"{self.path}/materials/fonts/static/Montserrat-Medium.ttf", 40)
         chk_font = pygame.font.Font(f"{self.path}/materials/fonts/checkfont.otf", 19)
 
-        menu_bnts = buttonConf(
+        menu_bnts_conf = buttonConf(
                 font = font,
                 position = ((self.w - 200)/2, 100),
                 bg_colour = (14, 59, 67), #(0, 0, 0),
@@ -50,7 +50,7 @@ class Game:
                 }
         
         start_scene()
-        smn = game_menu(menu, menu_bnts, gap = 10)
+        smn = game_menu(menu, menu_bnts_conf, gap = 10)
         settigns_scene() 
         assert self.gui.scene is settigns_scene
         test_chk = checkbox((100, 100), "✓", chk_font, size = (20, 22)) 
