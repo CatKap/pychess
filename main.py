@@ -1,7 +1,6 @@
 #!/usr/bin/env python3.10
 import pygame 
 from PyChess import pyDesk 
-from gameapi import smenu
 
 class Game:
     def __init__(self, w, h, b_x, b_y, board_addres = None, debug = False):
@@ -12,25 +11,7 @@ class Game:
         if board_addres:
             self.pyDesk.load(board_addres)
         
-    def run():
-        pass
-
     
-    def menudebug(self):
-        print("menu test")
-        menu = smenu({"test1" : 1, "test2" : 2, "test3" : 3}, (100, 100), "/home/kapitan/Progects/Chess/materials/menu/", pygame.font.SysFont("silom.ttf", 50), self.display)
-
-        clk = pygame.time.Clock()
-        is_run = True
-        h = self.display.get_height()
-        self.display.fill((255, 255, 255))
-        while is_run:
-            clk.tick(25)
-            menu.visualize()
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    is_run = False
-            pygame.display.flip()
 
     def debug(self):
         bite_im = pygame.image.load(self.pyDesk.addres + "bite_rect.png")
@@ -102,6 +83,6 @@ class Game:
         pygame.quit()
 
 if __name__ == "__main__":
-    game = Game(600, 600, 0, 600, board_addres="/home/kapitan/Progects/Chess/Saves/last_save.chsv", debug = True)  
+    game = Game(600, 600, 0, 600, board_addres="/home/kapitan/Progects/Chess/Saves/last_save.chsv", debug = False)  
     print(game.pyDesk.is_position_bite(55))
     game.debug()
