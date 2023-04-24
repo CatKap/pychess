@@ -2,6 +2,7 @@
 import pygame 
 from PyChess import pyDesk 
 
+
 class Game:
     def __init__(self, w, h, b_x, b_y, board_addres = None, debug = False):
         pygame.init()

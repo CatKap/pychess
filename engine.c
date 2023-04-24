@@ -5,6 +5,7 @@ const char queen_steps[8] = {-9, -7, 7, 9, -8, -1, 1, 8};
 const char* bishop_steps = queen_steps; // Bishop steps is just first four steps of queen
 const char* tower_steps = queen_steps + 4;
 
+
 char is_pos_exsist(unsigned char pos)
 {
     if (pos >= 64)
