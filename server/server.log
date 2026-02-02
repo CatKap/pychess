@@ -1,0 +1,4 @@
+[networker] Create socket with addres localhost on port 4567
+[networker] Client ('127.0.0.1', 51418) connected
+[networker] Client ('127.0.0.1', 51418) send dfdf
+[networker] Answering None

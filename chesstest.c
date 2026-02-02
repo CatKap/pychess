@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include "defines.h"
 
+//long figures[] = {"♔", "♕", "♖", "♗", "♘", "♙", "♚", "♛"};
+
+
+
+
 void print_desk(char positions[64], unsigned char tested)
 {
     for(char y = 7; y >= 0; y--)
@@ -81,7 +86,8 @@ int main(void)
 	-4,-2,-3,-5,-6,-3,-2,-4};
 
 	size_t lnt = 1;	
-	list *ret_list = new_brute_check(positions, 0, 1); 
+	previos_move p_move = {-1, -1, 0};
+	list *ret_list = brute_check(positions, 0, 1, p_move); 
 	struct node *itr = ret_list->first; 	
 	printf("TEST: [");
 	while(itr != NULL)

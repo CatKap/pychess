@@ -1,0 +1,364 @@
+fig_type: 1
+Not error.
+///////CALL APPLY MOVE
+CALL MATE AND STALEMATE CHECK
+KING TYPE: 0
+KING CHECK START
+KP: -9
+SUS_POSB: 0
+SUS_P: 51
+NOT: 1
+GET THIS
+KP: -8
+SUS_POSB: 0
+SUS_P: 52
+NOT: 1
+GET THIS
+KP: -7
+SUS_POSB: 0
+SUS_P: 53
+NOT: 1
+GET THIS
+KP: -1
+SUS_POSB: 0
+SUS_P: 59
+NOT: 1
+GET THIS
+KP: 1
+SUS_POSB: 0
+SUS_P: 61
+NOT: 1
+GET THIS
+KP: 7
+KP: 8
+KP: 9
+TRUE RET
+KING CAN'T MOVE
+FIG IS BLOCKED CALL
+AT POSITION: 40
+KING ON POSITION: 60
+REAL POS ANSWER:: -2
+/EXIT/
+   King is: 0
+RETURN FALSE FROM MATE_STALEMATE_CHEK
+CALL MATE AND STALEMATE CHECK
+KING TYPE: 1
+KING CHECK START
+KP: -9
+KP: -8
+KP: -7
+KP: -1
+SUS_POSB: 0
+SUS_P: 3
+NOT: 0
+GET THIS
+KP: 1
+SUS_POSB: 0
+SUS_P: 5
+NOT: 0
+GET THIS
+KP: 7
+SUS_POSB: 0
+SUS_P: 11
+NOT: 0
+GET THIS
+KP: 8
+SUS_POSB: 0
+SUS_P: 12
+NOT: 0
+GET THIS
+KP: 9
+SUS_POSB: 0
+SUS_P: 13
+NOT: 0
+GET THIS
+TRUE RET
+KING CAN'T MOVE
+FIG IS BLOCKED CALL
+AT POSITION: 0
+KING ON POSITION: 4
+REAL POS ANSWER:: 4
+FIG IS BLOCKED CALL
+AT POSITION: 1
+KING ON POSITION: 4
+REAL POS ANSWER:: 2
+/EXIT/
+   King is: 1
+RETURN FALSE FROM MATE_STALEMATE_CHEK
++++++++++++++++++++++++ADD DEBUG 16
+pos: 57
+posb: 40
+LENTH: 1
+///////CALL APPLY MOVE
+CALL MATE AND STALEMATE CHECK
+KING TYPE: 0
+KING CHECK START
+KP: -9
+SUS_POSB: 0
+SUS_P: 51
+NOT: 1
+GET THIS
+KP: -8
+SUS_POSB: 0
+SUS_P: 52
+NOT: 1
+GET THIS
+KP: -7
+SUS_POSB: 0
+SUS_P: 53
+NOT: 1
+GET THIS
+KP: -1
+SUS_POSB: 0
+SUS_P: 59
+NOT: 1
+GET THIS
+KP: 1
+SUS_POSB: 0
+SUS_P: 61
+NOT: 1
+GET THIS
+KP: 7
+KP: 8
+KP: 9
+TRUE RET
+KING CAN'T MOVE
+FIG IS BLOCKED CALL
+AT POSITION: 40
+KING ON POSITION: 60
+REAL POS ANSWER:: -2
+/EXIT/
+   King is: 0
+RETURN FALSE FROM MATE_STALEMATE_CHEK
+CALL MATE AND STALEMATE CHECK
+KING TYPE: 1
+KING CHECK START
+KP: -9
+KP: -8
+KP: -7
+KP: -1
+SUS_POSB: 0
+SUS_P: 3
+NOT: 0
+GET THIS
+KP: 1
+SUS_POSB: 0
+SUS_P: 5
+NOT: 0
+GET THIS
+KP: 7
+SUS_POSB: 0
+SUS_P: 11
+NOT: 0
+GET THIS
+KP: 8
+SUS_POSB: 0
+SUS_P: 12
+NOT: 0
+GET THIS
+KP: 9
+SUS_POSB: 0
+SUS_P: 13
+NOT: 0
+GET THIS
+TRUE RET
+KING CAN'T MOVE
+FIG IS BLOCKED CALL
+AT POSITION: 0
+KING ON POSITION: 4
+REAL POS ANSWER:: 4
+FIG IS BLOCKED CALL
+AT POSITION: 1
+KING ON POSITION: 4
+REAL POS ANSWER:: 2
+/EXIT/
+   King is: 1
+RETURN FALSE FROM MATE_STALEMATE_CHEK
++++++++++++++++++++++++ADD DEBUG 16
+pos: 62
+posb: 45
+LENTH: 2
+///////CALL APPLY MOVE
+CALL MATE AND STALEMATE CHECK
+KING TYPE: 0
+KING CHECK START
+KP: -9
+SUS_POSB: 0
+SUS_P: 51
+NOT: 1
+GET THIS
+KP: -8
+SUS_POSB: 0
+SUS_P: 52
+NOT: 1
+GET THIS
+KP: -7
+SUS_POSB: 0
+SUS_P: 53
+NOT: 1
+GET THIS
+KP: -1
+SUS_POSB: 0
+SUS_P: 59
+NOT: 1
+GET THIS
+KP: 1
+SUS_POSB: 0
+SUS_P: 61
+NOT: 1
+GET THIS
+KP: 7
+KP: 8
+KP: 9
+TRUE RET
+KING CAN'T MOVE
+FIG IS BLOCKED CALL
+AT POSITION: 40
+KING ON POSITION: 60
+REAL POS ANSWER:: -2
+/EXIT/
+   King is: 0
+RETURN FALSE FROM MATE_STALEMATE_CHEK
+CALL MATE AND STALEMATE CHECK
+KING TYPE: 1
+KING CHECK START
+KP: -9
+KP: -8
+KP: -7
+KP: -1
+SUS_POSB: 0
+SUS_P: 3
+NOT: 0
+GET THIS
+KP: 1
+SUS_POSB: 0
+SUS_P: 5
+NOT: 0
+GET THIS
+KP: 7
+SUS_POSB: 0
+SUS_P: 11
+NOT: 0
+GET THIS
+KP: 8
+SUS_POSB: 0
+SUS_P: 12
+NOT: 0
+GET THIS
+KP: 9
+SUS_POSB: 0
+SUS_P: 13
+NOT: 0
+GET THIS
+TRUE RET
+KING CAN'T MOVE
+FIG IS BLOCKED CALL
+AT POSITION: 0
+KING ON POSITION: 4
+REAL POS ANSWER:: 4
+FIG IS BLOCKED CALL
+AT POSITION: 1
+KING ON POSITION: 4
+REAL POS ANSWER:: 2
+/EXIT/
+   King is: 1
+RETURN FALSE FROM MATE_STALEMATE_CHEK
++++++++++++++++++++++++ADD DEBUG 16
+pos: 56
+posb: 57
+LENTH: 3
+///////CALL APPLY MOVE
+CALL MATE AND STALEMATE CHECK
+KING TYPE: 0
+KING CHECK START
+KP: -9
+SUS_POSB: 0
+SUS_P: 51
+NOT: 1
+GET THIS
+KP: -8
+SUS_POSB: 0
+SUS_P: 52
+NOT: 1
+GET THIS
+KP: -7
+SUS_POSB: 0
+SUS_P: 53
+NOT: 1
+GET THIS
+KP: -1
+SUS_POSB: 0
+SUS_P: 59
+NOT: 1
+GET THIS
+KP: 1
+SUS_POSB: 0
+SUS_P: 61
+NOT: 1
+GET THIS
+KP: 7
+KP: 8
+KP: 9
+TRUE RET
+KING CAN'T MOVE
+FIG IS BLOCKED CALL
+AT POSITION: 40
+KING ON POSITION: 60
+REAL POS ANSWER:: -2
+/EXIT/
+   King is: 0
+RETURN FALSE FROM MATE_STALEMATE_CHEK
+CALL MATE AND STALEMATE CHECK
+KING TYPE: 1
+KING CHECK START
+KP: -9
+KP: -8
+KP: -7
+KP: -1
+SUS_POSB: 0
+SUS_P: 3
+NOT: 0
+GET THIS
+KP: 1
+SUS_POSB: 0
+SUS_P: 5
+NOT: 0
+GET THIS
+KP: 7
+SUS_POSB: 0
+SUS_P: 11
+NOT: 0
+GET THIS
+KP: 8
+SUS_POSB: 0
+SUS_P: 12
+NOT: 0
+GET THIS
+KP: 9
+SUS_POSB: 0
+SUS_P: 13
+NOT: 0
+GET THIS
+TRUE RET
+KING CAN'T MOVE
+FIG IS BLOCKpygame 2.1.2 (SDL 2.0.16, Python 3.10.4)
+Hello from the pygame community. https://www.pygame.org/contribute.html
+It is a module.
+debug is False
+Without error:
+Fatal Python error: pygame_parachute: (pygame parachute) Segmentation Fault
+Python runtime state: initialized
+
+Current thread 0x00007fae20d60b80 (most recent call first):
+  File "/home/kapitan/Progects/Chess/PyChess.py", line 334 in prob_space_test
+  File "/home/kapitan/Progects/Chess/PyChess.py", line 340 in <module>
+
+Extension modules: pygame.base, pygame.constants, pygame.rect, pygame.rwobject, pygame.surflock, pygame.color, pygame.bufferproxy, pygame.math, pygame.surface, pygame.display, pygame.draw, pygame.event, pygame.imageext, pygame.image, pygame.joystick, pygame.key, pygame.mouse, pygame.time, pygame.mask, pygame.pixelcopy, pygame.transform, pygame.font, pygame.mixer_music, pygame.mixer, pygame.scrap, numpy.core._multiarray_umath, numpy.core._multiarray_tests, numpy.linalg.lapack_lite, numpy.linalg._umath_linalg, numpy.fft._pocketfft_internal, numpy.random._common, numpy.random.bit_generator, numpy.random._bounded_integers, numpy.random._mt19937, numpy.random.mtrand, numpy.random._philox, numpy.random._pcg64, numpy.random._sfc64, numpy.random._generator, pychess, pygame._freetype (total: 41)
+Fatal Python error: pygame_parachute: (pygame parachute) Segmentation Fault
+Python runtime state: initialized
+
+Current thread 0x00007f0be22b0b80 (most recent call first):
+  File "/home/kapitan/Progects/Chess/PyChess.py", line 334 in prob_space_test
+  File "/home/kapitan/Progects/Chess/PyChess.py", line 340 in <module>
+
+Extension modules: pygame.base, pygame.constants, pygame.rect, pygame.rwobject, pygame.surflock, pygame.color, pygame.bufferproxy, pygame.math, pygame.surface, pygame.display, pygame.draw, pygame.event, pygame.imageext, pygame.image, pygame.joystick, pygame.key, pygame.mouse, pygame.time, pygame.mask, pygame.pixelcopy, pygame.transform, pygame.font, pygame.mixer_music, pygame.mixer, pygame.scrap, numpy.core._multiarray_umath, numpy.core._multiarray_tests, numpy.linalg.lapack_lite, numpy.linalg._umath_linalg, numpy.fft._pocketfft_internal, numpy.random._common, numpy.random.bit_generator, numpy.random._bounded_integers, numpy.random._mt19937, numpy.random.mtrand, numpy.random._philox, numpy.random._pcg64, numpy.random._sfc64, numpy.random._generator, pychess, pygame._freetype (total: 41)
